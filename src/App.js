@@ -843,16 +843,16 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
             <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6 mb-8">
               <h3 className="font-bold text-red-800 mb-2">⚠️ 반드시 확인</h3>
               <p className="text-sm text-red-700">
-                작성 내용은 자동 저장되지 않습니다. 마지막에 워드 파일(.doc)로 다운로드 필수!
+                작성하는 내용은 자동으로 저장되지 않으며 새로고침 버튼을 누르면 그동안 작성했던 내용은 사라집니다. 내용 작성 후 마지막 페이지에서 반드시 워드 파일(.doc)로 다운로드 하여 작성한 내용을 보관하세요
               </p>
             </div>
 
             <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
               <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-xs text-gray-500 text-center">
+                <p className="text-xs text-gray-800 text-center">
                   © 2025 CareerEngineer All Rights Reserved.
                 </p>
-                <p className="text-xs text-red-600 text-center mt-1 font-semibold">
+                <p className="text-xs text-red-800 text-center mt-1 font-semibold">
 		이 워크북은 저작권법에 의해 보호받는 저작물입니다. 오직 개인적인 용도로만 사용해야 하며, 상업적 목적의 사용 및 무단 배포를 엄격히 금지합니다.
                 </p>
               </div>
@@ -983,7 +983,7 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
                     지금까지 작성한 모든 내용은 브라우저에만 임시 저장되어 있습니다. 
                     페이지를 새로고침하거나 닫으면 <strong>모든 내용이 즉시 삭제</strong>됩니다.
                     <br />
-                    💾 <strong>지금 바로 "워드 파일로 다운로드"</strong> 버튼을 눌러 .doc 파일로 저장하세요!
+                    <strong>내용 수정 후 "워드 파일로 다운로드"</strong> 버튼을 눌러 .doc 파일로 저장하세요!
                   </p>
                 </div>
               </div>
@@ -1042,7 +1042,7 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
               <p className="text-sm text-blue-800">
-                💾 <strong>워드에서 편집 가능:</strong> 다운로드한 .doc 파일을 Microsoft Word나 한글(HWP)에서 열어 자유롭게 편집하고 서식을 적용할 수 있습니다.
+                💾 <strong>워드에서 편집 가능:</strong> 다운로드한 .doc 파일을 Microsoft Word에서 열어 자유롭게 편집하고 서식을 적용할 수 있습니다.
               </p>
             </div>
 
@@ -1059,23 +1059,12 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
 
           {/* 저작권 안내 */}
           <div className="bg-white rounded-lg shadow-lg p-6 mt-6">
-            <h3 className="font-bold text-gray-800 mb-2">📌 워크북 사용 안내</h3>
-            <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
-              <li><strong>진정성 원칙:</strong> 3초 자가진단을 통과한 확실한 내용만 작성</li>
-              <li><strong>구체성 원칙:</strong> 숫자와 사실로 표현</li>
-              <li><strong>검증 가능:</strong> 가족·친구들도 인정할 수 있는 내용만 사용</li>
-            </ul>
-            <div className="mt-3 pt-3 border-t border-gray-200">
-              <p className="text-xs font-semibold text-gray-700 mb-1">💡 3초 자가진단이란?</p>
-              <p className="text-xs text-gray-600">
-                누군가 "정말이에요?"라고 물었을 때 3초 안에 자신있게 구체적인 예시나 증거를 댈 수 있는지 확인하는 것입니다.
-              </p>
             </div>
             <div className="mt-4 pt-4 border-t border-gray-200">
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-800 text-center">
                 © 2025 CareerEngineer All Rights Reserved.
               </p>
-               <p className="text-xs text-red-600 text-center mt-1 font-semibold">
+               <p className="text-xs text-red-800 text-center mt-1 font-semibold">
 		이 워크북은 저작권법에 의해 보호받는 저작물입니다. 오직 개인적인 용도로만 사용해야 하며, 상업적 목적의 사용 및 무단 배포를 엄격히 금지합니다.
               </p>
             </div>
