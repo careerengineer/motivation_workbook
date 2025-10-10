@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Check, Download, Lock, HelpCircle, Eye, Edit3 } from 'lucide-react';
 
-const App = () => {
+const MotivationWorkbook = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [showError, setShowError] = useState(false);
@@ -89,7 +89,7 @@ const App = () => {
         },
         {
           id: 'q1_2_4',
-          label: 'Q1.2.4. ⭐ 위 세 가지를 하나로 연결한 핵심 문장을 작성하세요',
+          label: 'Q1.2.4. 위 세 가지를 하나로 연결한 핵심 문장을 작성하세요',
           hint: '관심 계기 + 나의 역량 + 회사 선택 이유',
           placeholder: '예: 데이터로 고객을 이해하는 마케팅에 매료되어 관련 역량을 키워왔고, 이를 가장 잘 발휘할 수 있는 곳이 OOO라고 확신합니다.',
           rows: 2
@@ -103,7 +103,7 @@ const App = () => {
       questions: [
         {
           id: 'q1_3_1',
-          label: 'Q1.3.1. 해당 분야에 대한 관심을 갖게 된 계기가 일어난 구체적 상황을 묘사해주세요',
+          label: 'Q1.3.1. Q1.1.1(이 분야에 처음 관심을 갖게 된 구체적인 계기는 무엇인가요?)의 계기가 일어난 구체적 상황을 묘사해주세요',
           hint: '시간, 장소, 상황의 디테일',
           placeholder: '예: 2023년 가을, 팀원 4명과 밤 11시까지 도서관에서 회의하던 중이었습니다...',
           rows: 3
@@ -207,7 +207,7 @@ const App = () => {
     1: [
       {
         id: 'q2_1_1',
-        label: 'Q2.1.1. 해당 분야에 대한 관심을 갖게 된 계기를 더 구체적으로 묘사해주세요',
+        label: 'Q2.1.1. Q1.1.1(이 분야에 처음 관심을 갖게 된 구체적인 계기는 무엇인가요?)의 계기를 더 구체적으로 묘사해주세요',
         hint: '그 순간의 디테일한 상황과 감정을 생생하게 표현',
         guide: {
           description: '답변 가이드: 그 순간의 디테일한 상황과 감정을 생생하게 표현',
@@ -266,7 +266,7 @@ const App = () => {
     2: [
       {
         id: 'q2_2_1',
-        label: 'Q2.2.1. Q1.2.1의 활동 중 가장 도전적이었던 것을 자세히 설명해주세요',
+        label: 'Q2.2.1. Q1.2.1(관심을 이어가기 위해 구체적으로 어떤 활동을 했나요?)의 활동 중 가장 도전적이었던 것을 자세히 설명해주세요',
         hint: '어려움과 극복 과정을 구체적으로 서술',
         guide: {
           description: '답변 가이드: 어려움과 극복 과정을 구체적으로 서술',
@@ -652,6 +652,8 @@ const App = () => {
     } else if (currentPhase === 'evaluation') {
       setCurrentPhase('round1');
       setCurrentStep(round1Steps.length - 1);
+    } else if (currentPhase === 'round1' && currentStep === 0) {
+      setShowIntro(true);
     }
   };
 
@@ -780,6 +782,11 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
               접속하기
             </button>
           </div>
+          <div className="mt-6 pt-4 border-t border-gray-200 text-center">
+            <p className="text-xs text-gray-500">
+              © 2025 CareerEngineer All Rights Reserved.
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -820,6 +827,17 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
                 <li><strong>구체성:</strong> 숫자와 사실로 표현</li>
                 <li><strong>검증 가능성:</strong> 가족도 인정할 사실만</li>
               </ul>
+              <div className="mt-4 pt-4 border-t border-yellow-300">
+                <p className="text-sm font-semibold text-gray-800 mb-2">💡 3초 자가진단이란?</p>
+                <p className="text-sm text-gray-700">
+                  누군가 "정말이에요?"라고 물었을 때 <strong>3초 안에 자신있게 구체적인 예시나 증거를 댈 수 있는지</strong> 확인하는 것입니다. 
+                  만약 머뭇거리거나 애매한 답변만 나온다면, 그 내용은 진정성이 부족한 것입니다.
+                </p>
+                <p className="text-xs text-gray-600 mt-2 italic">
+                  예: "데이터 분석에 관심있다" → "정말이에요?" → (머뭇거림) ❌<br/>
+                  예: "6개월간 매주 2개씩 브랜드 분석 글 작성" → "정말이에요?" → "네, 블로그에 50개 글 있어요" ✅
+                </p>
+              </div>
             </div>
 
             <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6 mb-8">
@@ -827,6 +845,23 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
               <p className="text-sm text-red-700">
                 작성 내용은 자동 저장되지 않습니다. 마지막에 워드 파일(.doc)로 다운로드 필수!
               </p>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+              <h3 className="font-bold text-gray-800 mb-2">📌 워크북 사용 안내</h3>
+              <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                <li><strong>진정성 원칙:</strong> 3초 자가진단을 통과한 확실한 내용만 작성</li>
+                <li><strong>구체성 원칙:</strong> 숫자와 사실로 표현</li>
+                <li><strong>검증 가능:</strong> 가족·친구들도 인정할 수 있는 내용만 사용</li>
+              </ul>
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <p className="text-xs text-gray-500 text-center">
+                  © 2025 CareerEngineer All Rights Reserved.
+                </p>
+                <p className="text-xs text-red-600 text-center mt-1 font-semibold">
+                  이 워크북은 개인적인 용도로만 사용해야 하며, 상업적 목적의 사용 및 무단 배포를 엄격히 금지합니다.
+                </p>
+              </div>
             </div>
 
             <button
@@ -914,6 +949,12 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
                 2라운드 시작하기 ({selectedSteps.length}개 선택됨)
               </button>
             </div>
+          </div>
+
+          <div className="text-center mt-6">
+            <p className="text-xs text-gray-500">
+              © 2025 CareerEngineer All Rights Reserved.
+            </p>
           </div>
         </div>
       </div>
@@ -1019,6 +1060,30 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
                 <ChevronLeft className="w-5 h-5" />
                 이전으로
               </button>
+            </div>
+          </div>
+
+          {/* 저작권 안내 */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mt-6">
+            <h3 className="font-bold text-gray-800 mb-2">📌 워크북 사용 안내</h3>
+            <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+              <li><strong>진정성 원칙:</strong> 3초 자가진단을 통과한 확실한 내용만 작성</li>
+              <li><strong>구체성 원칙:</strong> 숫자와 사실로 표현</li>
+              <li><strong>검증 가능:</strong> 가족·친구들도 인정할 수 있는 내용만 사용</li>
+            </ul>
+            <div className="mt-3 pt-3 border-t border-gray-200">
+              <p className="text-xs font-semibold text-gray-700 mb-1">💡 3초 자가진단이란?</p>
+              <p className="text-xs text-gray-600">
+                누군가 "정말이에요?"라고 물었을 때 3초 안에 자신있게 구체적인 예시나 증거를 댈 수 있는지 확인하는 것입니다.
+              </p>
+            </div>
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <p className="text-xs text-gray-500">
+                © 2025 CareerEngineer All Rights Reserved.
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                이 워크북은 개인적인 용도로만 사용해야 하며, 상업적 목적의 사용 및 무단 배포를 엄격히 금지합니다.
+              </p>
             </div>
           </div>
         </div>
@@ -1227,9 +1292,15 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
             </button>
           </div>
         </div>
+
+        <div className="text-center mt-6">
+          <p className="text-xs text-gray-500">
+            © 2025 CareerEngineer All Rights Reserved.
+          </p>
+        </div>
       </div>
     </div>
   );
 };
 
-export default App;
+export default MotivationWorkbook;
