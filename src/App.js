@@ -1070,8 +1070,7 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
             </div>
           </div>
         </div>
-      </div>
-  </div>
+
     );
   }
 
