@@ -848,18 +848,12 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
             </div>
 
             <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-              <h3 className="font-bold text-gray-800 mb-2">📌 워크북 사용 안내</h3>
-              <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
-                <li><strong>진정성 원칙:</strong> 3초 자가진단을 통과한 확실한 내용만 작성</li>
-                <li><strong>구체성 원칙:</strong> 숫자와 사실로 표현</li>
-                <li><strong>검증 가능:</strong> 가족·친구들도 인정할 수 있는 내용만 사용</li>
-              </ul>
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <p className="text-xs text-gray-500 text-center">
                   © 2025 CareerEngineer All Rights Reserved.
                 </p>
                 <p className="text-xs text-red-600 text-center mt-1 font-semibold">
-                  이 워크북은 개인적인 용도로만 사용해야 하며, 상업적 목적의 사용 및 무단 배포를 엄격히 금지합니다.
+		이 워크북은 저작권법에 의해 보호받는 저작물입니다. 오직 개인적인 용도로만 사용해야 하며, 상업적 목적의 사용 및 무단 배포를 엄격히 금지합니다.
                 </p>
               </div>
             </div>
@@ -1081,8 +1075,8 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
               <p className="text-xs text-gray-500">
                 © 2025 CareerEngineer All Rights Reserved.
               </p>
-              <p className="text-xs text-gray-500 mt-1">
-                이 워크북은 개인적인 용도로만 사용해야 하며, 상업적 목적의 사용 및 무단 배포를 엄격히 금지합니다.
+               <p className="text-xs text-red-600 text-center mt-1 font-semibold">
+		이 워크북은 저작권법에 의해 보호받는 저작물입니다. 오직 개인적인 용도로만 사용해야 하며, 상업적 목적의 사용 및 무단 배포를 엄격히 금지합니다.
               </p>
             </div>
           </div>
@@ -1108,10 +1102,10 @@ ${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).j
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            지원동기 작성 워크북
+            CareerEngineer 지원동기 작성 워크북
           </h1>
           <p className="text-gray-600">
-            진정성이 화려함을 이긴다 + 구체적 경험이 설득력을 만든다
+
           </p>
           
           <div className="mt-4">
