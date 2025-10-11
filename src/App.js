@@ -43,21 +43,54 @@ const MotivationWorkbook = () => {
           label: 'Q1.1.1. 이 분야에 처음 관심을 갖게 된 구체적인 계기는 무엇인가요?',
           hint: '언제, 어디서, 무엇을 통해 관심이 생겼는지 구체적으로',
           placeholder: '예: 대학교 2학기 "마케팅원론" 수업에서 진행한 "스타트업 마케팅 전략 수립" 팀 프로젝트가 계기였습니다...',
-          rows: 4
+          rows: 4,
+          guide: {
+            description: '답변 가이드: 언제, 어디서, 무엇을 통해 관심이 생겼는지 구체적으로',
+            diagnosis: '즉석자가진단: 면접관이 “그때 어떤 기분이었나요?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '정확히 언제였나요? (학년, 학기, 년도)',
+              '어떤 상황에서였나요? (수업, 동아리, 대외활동)'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 경험정리 문서의 “도전” 시트에서 해당 분야와 관련된 활동들을 찾아보세요.',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 시기가 기억 안날 때 → 참고자료 2.1절 “경험 시간순 정리법”',
+            example: '대학교 2학년 2학기 \'마케팅원론\' 수업에서 진행한 \'스타트업 마케팅 전략 수립\' 팀 프로젝트가 계기였습니다. 실제 스타트업 대표님과 협업하여 마케팅 전략을 수립하는 과정에서...'
+          }
         },
         {
           id: 'q1_1_2',
           label: 'Q1.1.2. 그 계기에서 무엇이 특별히 인상 깊었나요?',
           hint: '단순 감상이 아닌 구체적인 깨달음이나 발견',
           placeholder: '예: 데이터 분석을 통해 20대 타겟의 숨은 니즈를 발견하고, 이를 바탕으로 만든 캠페인이 실제로 300% 매출 상승...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 단순 감상이 아닌 구체적인 깨달음이나 발견',
+            diagnosis: '즉석자가진단: 면접관이 “왜 그게 특별했나요?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '그 계기에서 얻은 구체적 깨달음은?',
+              '왜 그 부분이 인상 깊었나요?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 참고자료 1장 “분야별 관심 계기 아이디어 뱅크”',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 계기가 평범하다고 느껴질 때 → 참고자료 1장',
+            example: '데이터 분석을 통해 20대 타겟의 숨은 니즈를 발견하고, 이를 바탕으로 만든 캠페인이 실제로 300% 매출 상승 효과를 시뮬레이션한 것이 인상적이었습니다.'
+          }
         },
         {
           id: 'q1_1_3',
           label: 'Q1.1.3. 그 이후 어떤 생각이나 행동의 변화가 있었나요?',
           hint: '관심이 실제 행동으로 이어진 구체적 사례',
           placeholder: '예: 그날 저녁부터 마케팅 관련 유튜브 채널을 구독하기 시작했고, 다음 주에는 마케팅 동아리에 가입했습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 관심이 실제 행동으로 이어진 구체적 사례',
+            diagnosis: '즉석자가진단: 면접관이 “그 변화가 구체적으로 어떻게 나타났나요?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '그 이후 구체적 행동 변화는?',
+              '어떤 생각의 변화가 있었나요?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 경험정리 문서에서 후속 활동을 찾아보세요.',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 2.1절 “경험 시간순 정리법”',
+            example: '그날 저녁부터 마케팅 관련 유튜브 채널을 구독하기 시작했고, 다음 주에는 마케팅 동아리에 가입했습니다.'
+          }
         }
       ]
     },
@@ -71,28 +104,72 @@ const MotivationWorkbook = () => {
           label: 'Q1.2.1. 관심을 이어가기 위해 구체적으로 어떤 활동을 했나요?',
           hint: '측정 가능하고 검증 가능한 활동',
           placeholder: '예: 6개월간 마케팅 이론서 10권을 읽고, 브랜드 분석 블로그를 운영하며 20개 기업을 분석했습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 측정 가능하고 검증 가능한 활동',
+            diagnosis: '즉석자가진단: 면접관이 “그 활동을 통해 무엇을 얻었나요?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '구체적 활동 목록은?',
+              '활동의 지속 기간과 규모는?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 경험정리 문서의 “활동” 시트 참조',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 3.2절',
+            example: '6개월간 마케팅 이론서 10권을 읽고, 브랜드 분석 블로그를 운영하며 20개 기업을 분석했습니다.'
+          }
         },
         {
           id: 'q1_2_2',
           label: 'Q1.2.2. 지금 내가 보유한 이 직무 관련 가장 강력한 역량은?',
           hint: '구체적 경험과 성과로 입증 가능한 역량',
           placeholder: '예: MZ세대 트렌드 분석 능력과 SNS 콘텐츠 기획 역량입니다. 인스타그램 계정을 3개월 만에 팔로워 1,500명...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 구체적 경험과 성과로 입증 가능한 역량',
+            diagnosis: '즉석자가진단: 면접관이 “그 역량을 증명할 예시는?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '가장 강력한 역량은?',
+              '그 역량을 입증할 성과는?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 실전가이드 2.3절 적합성 원칙 참조',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 4.1절',
+            example: 'MZ세대 트렌드 분석 능력과 SNS 콘텐츠 기획 역량입니다. 인스타그램 계정을 3개월 만에 팔로워 1,500명 달성했습니다.'
+          }
         },
         {
           id: 'q1_2_3',
           label: 'Q1.2.3. 여러 회사 중 왜 이 회사인가요?',
           hint: '회사의 구체적 특성과 본인의 연결점',
           placeholder: '예: OOO만의 \'데이터 기반 의사결정\' 문화와 \'빠른 실행력\'이 제가 추구하는 마케팅 방식과 정확히 일치합니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 회사의 구체적 특성과 본인의 연결점',
+            diagnosis: '즉석자가진단: 면접관이 “다른 회사와 비교했을 때 차이는?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '회사만의 특성은?',
+              '그 특성과 나의 연결점은?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 실전가이드 2.4절 연결성 원칙 참조',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 5.1절',
+            example: 'OOO만의 \'데이터 기반 의사결정\' 문화와 \'빠른 실행력\'이 제가 추구하는 마케팅 방식과 정확히 일치합니다.'
+          }
         },
         {
           id: 'q1_2_4',
           label: 'Q1.2.4. 위 세 가지를 하나로 연결한 핵심 문장을 작성하세요',
           hint: '관심 계기 + 나의 역량 + 회사 선택 이유',
           placeholder: '예: 데이터로 고객을 이해하는 마케팅에 매료되어 관련 역량을 키워왔고, 이를 가장 잘 발휘할 수 있는 곳이 OOO라고 확신합니다.',
-          rows: 2
+          rows: 2,
+          guide: {
+            description: '답변 가이드: 관심 계기 + 나의 역량 + 회사 선택 이유',
+            diagnosis: '즉석자가진단: 면접관이 “그 문장의 근거는?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '세 요소를 어떻게 연결할까?',
+              '문장이 자연스러운가?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 이전 답변들을 요약해보세요.',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 3.1절',
+            example: '데이터로 고객을 이해하는 마케팅에 매료되어 관련 역량을 키워왔고, 이를 가장 잘 발휘할 수 있는 곳이 OOO라고 확신합니다.'
+          }
         }
       ]
     },
@@ -106,21 +183,54 @@ const MotivationWorkbook = () => {
           label: 'Q1.3.1. Q1.1.1(이 분야에 처음 관심을 갖게 된 구체적인 계기는 무엇인가요?)의 계기가 일어난 구체적 상황을 묘사해주세요',
           hint: '시간, 장소, 상황의 디테일',
           placeholder: '예: 2023년 가을, 팀원 4명과 밤 11시까지 도서관에서 회의하던 중이었습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 시간, 장소, 상황의 디테일',
+            diagnosis: '즉석자가진단: 면접관이 “그 상황을 더 자세히 설명해주세요”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '시간과 장소는?',
+              '상황의 디테일은?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 사진이나 메모를 떠올려보세요.',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 2.1절',
+            example: '2023년 가을, 팀원 4명과 밤 11시까지 도서관에서 회의하던 중이었습니다.'
+          }
         },
         {
           id: 'q1_3_2',
           label: 'Q1.3.2. 그때 어떤 감정이나 생각이 들었나요?',
           hint: '내면의 변화와 깨달음',
           placeholder: '예: "이런 일을 매일 한다면 정말 행복하겠다"는 생각이 들었고, 처음으로 제 진로가 명확해지는 느낌이었습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 내면의 변화와 깨달음',
+            diagnosis: '즉석자가진단: 면접관이 “그 감정을 더 구체적으로?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '구체적 감정은?',
+              '생각의 변화는?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 당시 일기를 떠올려보세요.',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 1장',
+            example: '"이런 일을 매일 한다면 정말 행복하겠다"는 생각이 들었고, 처음으로 제 진로가 명확해지는 느낌이었습니다.'
+          }
         },
         {
           id: 'q1_3_3',
           label: 'Q1.3.3. 이 경험이 나의 어떤 가치관과 연결되나요?',
           hint: '개인의 신념이나 추구하는 가치',
           placeholder: '예: 저는 늘 "데이터는 거짓말하지 않는다"고 믿어왔고, 숫자로 문제를 해결하는 것을 좋아합니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 개인의 신념이나 추구하는 가치',
+            diagnosis: '즉석자가진단: 면접관이 “그 가치관의 예시는?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '나의 가치관은?',
+              '경험과 연결점은?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 실전가이드 2.1절 경험기반 원칙 참조',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 4.2절',
+            example: '저는 늘 "데이터는 거짓말하지 않는다"고 믿어왔고, 숫자로 문제를 해결하는 것을 좋아합니다.'
+          }
         }
       ]
     },
@@ -134,21 +244,54 @@ const MotivationWorkbook = () => {
           label: 'Q1.4.1. 관심이 생긴 후 이 직무를 향한 발전 과정은?',
           hint: '시간 순서대로 역량 발전 스토리',
           placeholder: '예: 처음에는 독서로 시작했고, 3개월 후 동아리 활동, 6개월 후 개인 프로젝트로 이어졌습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 시간 순서대로 역량 발전 스토리',
+            diagnosis: '즉석자가진단: 면접관이 “그 과정의 타임라인은?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '시간 순서대로 나열해보세요.',
+              '각 단계의 발전은?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 참고자료 2.1절 “경험 시간순 정리법”',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 경험정리 문서 참조',
+            example: '처음에는 독서로 시작했고, 3개월 후 동아리 활동, 6개월 후 개인 프로젝트로 이어졌습니다.'
+          }
         },
         {
           id: 'q1_4_2',
           label: 'Q1.4.2. 가장 많은 시간과 노력을 투자한 구체적 준비는?',
           hint: '가장 열심히 한 활동과 그 성과',
           placeholder: '예: 6개월간 매주 2개씩 브랜드 분석 글을 작성했고, 총 50개 기업을 분석하며 누적 조회수 1만을 달성했습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 가장 열심히 한 활동과 그 성과',
+            diagnosis: '즉석자가진단: 면접관이 “그 성과의 구체적 숫자는?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '가장 투자한 활동은?',
+              '성과는 어떻게 측정하나요?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 실전가이드 2.2절 구체성 원칙 참조',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 3.2절',
+            example: '6개월간 매주 2개씩 브랜드 분석 글을 작성했고, 총 50개 기업을 분석하며 누적 조회수 1만을 달성했습니다.'
+          }
         },
         {
           id: 'q1_4_3',
           label: 'Q1.4.3. 이 준비 과정에서 얻은 가장 중요한 배움이나 깨달음은?',
           hint: '실패와 성공을 통한 성장',
           placeholder: '예: 초반에는 트렌드만 쫓다가 실패했지만, 브랜드 본질을 이해하는 것이 더 중요하다는 것을 깨달았습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 실패와 성공을 통한 성장',
+            diagnosis: '즉석자가진단: 면접관이 “그 깨달음의 예시는?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '실패 경험은?',
+              '그로부터 배운 점은?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 참고자료 4.3절',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 실전가이드 1.2절 실패 패턴 참조',
+            example: '초반에는 트렌드만 쫓다가 실패했지만, 브랜드 본질을 이해하는 것이 더 중요하다는 것을 깨달았습니다.'
+          }
         }
       ]
     },
@@ -162,21 +305,54 @@ const MotivationWorkbook = () => {
           label: 'Q1.5.1. 이 회사를 어떻게 알게 되었나요?',
           hint: '회사를 발견한 구체적 경로',
           placeholder: '예: 마케팅 컨퍼런스에서 OOO 마케팅 팀장님의 발표를 듣고 감명받았습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 회사를 발견한 구체적 경로',
+            diagnosis: '즉석자가진단: 면접관이 “그 경로의 구체적 시기는?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '어떻게 알게 됐나요?',
+              '구체적 경로는?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 회사 홈페이지나 뉴스 참조',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 5.1절',
+            example: '마케팅 컨퍼런스에서 OOO 마케팅 팀장님의 발표를 듣고 감명받았습니다.'
+          }
         },
         {
           id: 'q1_5_2',
           label: 'Q1.5.2. 처음 이 회사를 알았을 때 어떤 인상을 받았나요?',
           hint: '첫 인상과 끌린 이유',
           placeholder: '예: "여기는 진짜 데이터로 의사결정하는 회사구나"라는 확신이 들었습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 첫 인상과 끌린 이유',
+            diagnosis: '즉석자가진단: 면접관이 “왜 그 인상이 중요하나요?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '첫 인상은?',
+              '끌린 이유는?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 실전가이드 2.3절 적합성 원칙 참조',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 5.2절',
+            example: '"여기는 진짜 데이터로 의사결정하는 회사구나"라는 확신이 들었습니다.'
+          }
         },
         {
           id: 'q1_5_3',
           label: 'Q1.5.3. 다른 회사와 비교했을 때 이 회사만의 특별한 점은?',
           hint: '차별화된 강점과 매력 포인트',
           placeholder: '예: 다른 회사들은 마케팅을 비용으로 보지만, OOO는 투자로 보고 과감한 실험을 장려한다는 점이 인상적이었습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 차별화된 강점과 매력 포인트',
+            diagnosis: '즉석자가진단: 면접관이 “구체적 비교 예시는?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '다른 회사와의 차이는?',
+              '특별한 점은?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 회사 분석 자료 참조',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 5.3절',
+            example: '다른 회사들은 마케팅을 비용으로 보지만, OOO는 투자로 보고 과감한 실험을 장려한다는 점이 인상적이었습니다.'
+          }
         }
       ]
     },
@@ -190,14 +366,36 @@ const MotivationWorkbook = () => {
           label: 'Q1.6.1. 입사 후 내가 기여할 수 있는 구체적 역량은?',
           hint: '보유 역량과 증명 가능한 경험',
           placeholder: '예: MZ세대 트렌드 분석과 SNS 콘텐츠 기획 역량으로 2030 고객 확보에 기여하겠습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 보유 역량과 증명 가능한 경험',
+            diagnosis: '즉석자가진단: 면접관이 “그 기여의 구체적 방식은?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '기여할 역량은?',
+              '증명 가능한 경험은?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 실전가이드 2.3절 적합성 원칙 참조',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 6.1절',
+            example: 'MZ세대 트렌드 분석과 SNS 콘텐츠 기획 역량으로 2030 고객 확보에 기여하겠습니다.'
+          }
         },
         {
           id: 'q1_6_2',
           label: 'Q1.6.2. 그 역량을 보여주는 가장 강력한 경험은?',
           hint: '구체적 프로젝트나 성과',
           placeholder: '예: 인스타그램 계정을 운영하며 3개월 만에 팔로워 1,500명을 모았고, 협찬 제안을 5건 받았습니다...',
-          rows: 3
+          rows: 3,
+          guide: {
+            description: '답변 가이드: 구체적 프로젝트나 성과',
+            diagnosis: '즉석자가진단: 면접관이 “그 경험의 세부 사항은?”라고 물으면 즉답 가능한가?',
+            helpQuestions: [
+              '가장 강력한 경험은?',
+              '성과는?'
+            ],
+            ifDifficult: '💭 답변하기 어렵다면: 경험정리 문서 참조',
+            ifStillDifficult: '💡 구체화 도움 질문으로도 어렵다면: 참고자료 6.2절',
+            example: '인스타그램 계정을 운영하며 3개월 만에 팔로워 1,500명을 모았고, 협찬 제안을 5건 받았습니다.'
+          }
         }
       ]
     }
@@ -398,7 +596,7 @@ const MotivationWorkbook = () => {
           ifStillDifficult: '기본적인 회사 정보라도 구체화하세요.',
           example: '지난 2024년 11월, OOO는 동남아 시장 진출을 공식 발표했습니다.'
         },
-                  placeholder: '예: 지난 2024년 11월, OOO는 동남아 시장 진출을 공식 발표했습니다...',
+        placeholder: '예: 지난 2024년 11월, OOO는 동남아 시장 진출을 공식 발표했습니다...',
         rows: 4
       },
       {
@@ -417,7 +615,7 @@ const MotivationWorkbook = () => {
           ifStillDifficult: '일반적인 키워드라도 회사와 연결하세요.',
           example: 'OOO는 "빠른 실행과 지속적 개선"을 핵심 가치로 삼고 있습니다.'
         },
-                  placeholder: '예: OOO는 "빠른 실행과 지속적 개선"을 핵심 가치로 삼고 있습니다...',
+        placeholder: '예: OOO는 "빠른 실행과 지속적 개선"을 핵심 가치로 삼고 있습니다...',
         rows: 4
       },
       {
@@ -580,279 +778,7 @@ const MotivationWorkbook = () => {
     },
     {
       id: 'connect_5_6',
-      label: '연결 확인 5→6: 회사 선택에서 기여 방안으로',
-      hint: 'STEP 5의 회사 특성이 STEP 6의 기여 계획에 어떻게 반영되었나요?',
-      placeholder: '예: OOO의 이러한 문화와 방향성 속에서 제가 준비한 역량을 발휘하여...',
-      rows: 3,
-      referenceSteps: [5, 6],
-      referenceQuestions: ['q1_5_2', 'q1_5_3', 'q1_6_1', 'q1_6_2']
-    }
-  ];
-
-  const handleAnswerChange = (questionId, value) => {
-    setAnswers(prev => ({ ...prev, [questionId]: value }));
-  };
-
-  const handleBasicInfoChange = (field, value) => {
-    setBasicInfo(prev => ({ ...prev, [field]: value }));
-  };
-
-  const toggleGuide = (questionId) => {
-    setShowGuide(prev => ({ ...prev, [questionId]: !prev[questionId] }));
-  };
-
-  const toggleStepSelection = (stepId) => {
-    setSelectedSteps(prev => 
-      prev.includes(stepId) 
-        ? prev.filter(id => id !== stepId)
-        : [...prev, stepId]
-    );
-  };
-
-  const goToNextStep = () => {
-    if (currentPhase === 'round1') {
-      if (currentStep < round1Steps.length - 1) {
-        setCurrentStep(currentStep + 1);
-      } else {
-        setCurrentPhase('evaluation');
-      }
-    } else if (currentPhase === 'evaluation') {
-      const sortedSteps = [...selectedSteps].sort((a, b) => a - b);
-      setSelectedSteps(sortedSteps);
-      setCurrentPhase('round2');
-      setCurrentStep(0);
-    } else if (currentPhase === 'round2') {
-      if (currentStep < selectedSteps.length - 1) {
-        setCurrentStep(currentStep + 1);
-      } else {
-        setCurrentPhase('round3');
-        setCurrentStep(0);
-      }
-    } else if (currentPhase === 'round3') {
-      if (currentStep < round3Questions.length - 1) {
-        setCurrentStep(currentStep + 1);
-      } else {
-        setFinalText(generateMotivationLetter());
-        setCurrentPhase('completed');
-      }
-    }
-  };
-
-  const goToPrevStep = () => {
-    if (currentPhase === 'completed') {
-      setCurrentPhase('round3');
-      setCurrentStep(round3Questions.length - 1);
-    } else if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    } else if (currentPhase === 'round3') {
-      setCurrentPhase('round2');
-      setCurrentStep(selectedSteps.length - 1);
-    } else if (currentPhase === 'round2') {
-      setCurrentPhase('evaluation');
-    } else if (currentPhase === 'evaluation') {
-      setCurrentPhase('round1');
-      setCurrentStep(round1Steps.length - 1);
-    } else if (currentPhase === 'round1' && currentStep === 0) {
-      setShowIntro(true);
-    }
-  };
-
-  const generateMotivationLetter = () => {
-    const parts = [];
-    
-    if (answers.q1_2_4) parts.push(answers.q1_2_4);
-    
-    if (answers.q1_1_1) parts.push('\n' + answers.q1_1_1);
-    if (answers.q1_1_2) parts.push(answers.q1_1_2);
-    if (answers.q1_1_3) parts.push(answers.q1_1_3);
-    
-    if (answers.q1_3_1) parts.push('\n' + answers.q1_3_1);
-    if (answers.q1_3_2) parts.push(answers.q1_3_2);
-    if (answers.q1_3_3) parts.push(answers.q1_3_3);
-    
-    if (answers.connect_1_2) parts.push('\n' + answers.connect_1_2);
-    
-    if (answers.q1_4_1) parts.push('\n' + answers.q1_4_1);
-    if (answers.q1_4_2) parts.push(answers.q1_4_2);
-    if (answers.q1_4_3) parts.push(answers.q1_4_3);
-    
-    if (answers.connect_2_3) parts.push('\n' + answers.connect_2_3);
-    
-    if (answers.q1_2_2) parts.push('\n' + answers.q1_2_2);
-    
-    if (answers.connect_3_4) parts.push('\n' + answers.connect_3_4);
-    
-    if (answers.q1_5_1) parts.push('\n' + answers.q1_5_1);
-    if (answers.q1_5_2) parts.push(answers.q1_5_2);
-    if (answers.q1_5_3) parts.push(answers.q1_5_3);
-    
-    if (answers.q1_2_3) parts.push(answers.q1_2_3);
-    
-    if (answers.connect_4_5) parts.push('\n' + answers.connect_4_5);
-    
-    if (answers.q1_6_1) parts.push('\n' + answers.q1_6_1);
-    if (answers.q1_6_2) parts.push(answers.q1_6_2);
-    
-    if (answers.connect_5_6) parts.push('\n' + answers.connect_5_6);
-    
-    return parts.join('\n\n');
-  };
-
-  const downloadFinalText = () => {
-    const htmlContent = `
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>지원동기</title>
-<style>
-body { font-family: '맑은 고딕', 'Malgun Gothic', sans-serif; line-height: 1.8; padding: 40px; }
-p { margin-bottom: 1em; }
-</style>
-</head>
-<body>
-${finalText.split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).join('\n')}
-</body>
-</html>`;
-    
-    const blob = new Blob([htmlContent], { type: 'application/msword;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${basicInfo.company || '회사'}_지원동기.doc`;
-    a.click();
-    URL.revokeObjectURL(url);
-    setDownloadSuccess(true);
-    setTimeout(() => setDownloadSuccess(false), 5000);
-  };
-
-  const getRawAnswersText = () => {
-    return `📋 원본 답변 모음\n\n[기본 정보]\n산업: ${basicInfo.industry || '-'}\n직무: ${basicInfo.position || '-'}\n회사: ${basicInfo.company || '-'}\n\n[STEP 1: 관심 계기]\nQ1.1.1: ${answers.q1_1_1 || '-'}\nQ1.1.2: ${answers.q1_1_2 || '-'}\nQ1.1.3: ${answers.q1_1_3 || '-'}\n\n[STEP 2: 핵심 메시지]\nQ1.2.1: ${answers.q1_2_1 || '-'}\nQ1.2.2: ${answers.q1_2_2 || '-'}\nQ1.2.3: ${answers.q1_2_3 || '-'}\nQ1.2.4: ${answers.q1_2_4 || '-'}\n\n[STEP 3: 관심 계기 구체화]\nQ1.3.1: ${answers.q1_3_1 || '-'}\nQ1.3.2: ${answers.q1_3_2 || '-'}\nQ1.3.3: ${answers.q1_3_3 || '-'}\n\n[STEP 4: 준비 과정]\nQ1.4.1: ${answers.q1_4_1 || '-'}\nQ1.4.2: ${answers.q1_4_2 || '-'}\nQ1.4.3: ${answers.q1_4_3 || '-'}\n\n[STEP 5: 회사 발견]\nQ1.5.1: ${answers.q1_5_1 || '-'}\nQ1.5.2: ${answers.q1_5_2 || '-'}\nQ1.5.3: ${answers.q1_5_3 || '-'}\n\n[STEP 6: 역량 및 기여]\nQ1.6.1: ${answers.q1_6_1 || '-'}\nQ1.6.2: ${answers.q1_6_2 || '-'}\n\n[3라운드 연결]\n1→2: ${answers.connect_1_2 || '-'}\n2→3: ${answers.connect_2_3 || '-'}\n3→4: ${answers.connect_3_4 || '-'}\n4→5: ${answers.connect_4_5 || '-'}\n5→6: ${answers.connect_5_6 || '-'}`;
-  };
-
-  const canGoNext = () => {
-    if (currentPhase === 'evaluation') {
-      return selectedSteps.length >= 1;
-    }
-    if (currentStep === 0 && currentPhase === 'round1') {
-      return basicInfo.industry && basicInfo.position && basicInfo.company;
-    }
-    return true;
-  };
-
-  const progress = currentPhase === 'round1'
-    ? ((currentStep + 1) / round1Steps.length) * 33
-    : currentPhase === 'round2'
-    ? 33 + ((currentStep + 1) / selectedSteps.length) * 33
-    : 66 + ((currentStep + 1) / round3Questions.length) * 34;
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-8">
-        <div className="bg-white rounded-lg shadow-2xl p-8 max-w-md w-full">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
-              <Lock className="w-8 h-8 text-blue-600" />
-            </div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">비공개 페이지</h1>
-            <p className="text-gray-600">CareerEngineer의 지원동기 작성 워크북</p>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">비밀번호를 입력하세요</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                placeholder="비밀번호 입력"
-                autoFocus
-              />
-            </div>
-            {showError && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                비밀번호가 올바르지 않습니다.
-              </div>
-            )}
-            <button
-              onClick={handleLogin}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-            >
-              접속하기
-            </button>
-          </div>
-          <div className="mt-6 pt-4 border-t border-gray-200 text-center">
-            <p className="text-xs text-gray-500">
-              © 2025 CareerEngineer All Rights Reserved.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (showIntro) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-2xl p-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4 text-center">
-              질문에 답하며 완성하는<br />지원동기 워크북
-            </h1>
-            <p className="text-center text-gray-600 mb-8">CareerEngineer의 3라운드 체계적 작성 시스템</p>
-
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">3라운드 작성 시스템</h2>
-              <div className="space-y-4">
-                <div className="bg-white rounded-lg p-4 border-l-4 border-blue-500">
-                  <h3 className="font-bold text-gray-800 mb-2">1라운드: 기본 지원동기 수립</h3>
-                  <p className="text-sm text-gray-700">6개 STEP 핵심 질문에 답변 (전체 구조 파악)</p>
-                </div>
-                <div className="bg-white rounded-lg p-4 border-l-4 border-indigo-500">
-                  <h3 className="font-bold text-gray-800 mb-2">2라운드: 약한 부분 보강</h3>
-                  <p className="text-sm text-gray-700">부족한 STEP 선택 → 심화 질문으로 구체화 (1개 이상)</p>
-                </div>
-                <div className="bg-white rounded-lg p-4 border-l-4 border-purple-500">
-                  <h3 className="font-bold text-gray-800 mb-2">3라운드: 연결 및 완성</h3>
-                  <p className="text-sm text-gray-700">STEP 간 연결 질문으로 자연스러운 흐름 만들기</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 mb-8">
-              <h3 className="font-bold text-gray-800 mb-3">핵심 원칙</h3>
-              <ul className="space-y-2 text-sm text-gray-700">
-                <li><strong>진정성:</strong> 3초 자가진단 통과한 내용만</li>
-                <li><strong>구체성:</strong> 숫자와 사실로 표현</li>
-                <li><strong>검증 가능성:</strong> 가족도 인정할 사실만</li>
-              </ul>
-              <div className="mt-4 pt-4 border-t border-yellow-300">
-                <p className="text-sm font-semibold text-gray-800 mb-2">💡 3초 자가진단이란?</p>
-                <p className="text-sm text-gray-700">
-                  누군가 "정말이에요?"라고 물었을 때 <strong>3초 안에 자신있게 구체적인 예시나 증거를 댈 수 있는지</strong> 확인하는 것입니다. 
-                  만약 머뭇거리거나 애매한 답변만 나온다면, 그 내용은 진정성이 부족한 것입니다.
-                </p>
-                <p className="text-xs text-gray-600 mt-2 italic">
-                  예: "데이터 분석에 관심있다" → "정말이에요?" → (머뭇거림) ❌<br/>
-                  예: "6개월간 매주 2개씩 브랜드 분석 글 작성" → "정말이에요?" → "네, 블로그에 50개 글 있어요" ✅
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-red-50 border-2 border-red-300 rounded-lg p-6 mb-8">
-              <h3 className="font-bold text-red-800 mb-2">⚠️ 반드시 확인</h3>
-              <p className="text-sm text-red-700">
-                작성하는 내용은 자동으로 저장되지 않으며 새로고침 버튼을 누르면 그동안 작성했던 내용은 사라집니다. 내용 작성 후 마지막 페이지에서 반드시 워드 파일(.doc)로 다운로드 하여 작성한 내용을 보관하세요
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <p className="text-xs text-gray-800 text-center">
-                  © 2025 CareerEngineer All Rights Reserved.
-                </p>
-                <p className="text-xs text-red-800 text-center mt-1 font-semibold">
+      ...(truncated 11900 characters)...mibold">
 		이 워크북은 저작권법에 의해 보호받는 저작물입니다. 워크북의 전체 또는 일부를 저작권자의 사전 서면 동의 없이 무단으로 복제, 배포, 전송, 전시, 방송하거나 수정 및 편집하는 행위는 금지되어 있으며, 위반 시 관련 법령에 따라 법적인 책임을 질 수 있습니다. 오직 개인적인 용도로만 사용해야 하며, 상업적 목적의 사용 및 무단 배포를 엄격히 금지합니다.
                 </p>
               </div>
