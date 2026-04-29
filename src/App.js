@@ -388,7 +388,6 @@ const MotivationWorkbook = () => {
     
     // 추가 서비스 (별도 섹션)
     const extraServices = [
-      { label: 'CareerEngineer 전자책 / 멘토링', url: 'https://www.latpeed.com/spaces/0/stores/collections/68459e30db90f1ebed56226f' },
       { label: 'CareerEngineer 1-Hour 1:1 취업컨설팅', url: 'https://www.latpeed.com/products/S92cP' },
       { label: 'CareerEngineer 카카오톡 상담', url: 'https://open.kakao.com/me/careerengineer' },
     ];
@@ -745,27 +744,6 @@ const MotivationWorkbook = () => {
     <div style={S.page}>
       <FocusStyles />
       <div style={S.container}>
-        <div style={S.headerSticky}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: SPACING.base, flexWrap: 'wrap' }}>
-            <CELockupA height={32} />
-            <div style={{ position: 'relative', flex: 1, display: 'flex', justifyContent: 'center' }}>
-              <button onClick={() => setShowStepNav(v => !v)} style={{ 
-                background: COLORS.bgAlt, border: 'none', cursor: 'pointer',
-                fontSize: FONT.size.sm, color: COLORS.accent, textAlign: 'center',
-                padding: '4px 12px', borderRadius: 4, fontFamily: FONT.family,
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 4,
-              }} title="전체 7단계 보기" className="ce-step-nav-trigger">
-                STEP 4 · 지원동기 작성
-                <span style={{ fontSize: FONT.size.xs, color: COLORS.accent, opacity: 1, transform: showStepNav ? 'rotate(180deg)' : 'none', transition: 'transform 150ms' }}>▾</span>
-              </button>
-              <StepNavigatorDropdown open={showStepNav} onClose={() => setShowStepNav(false)} currentKey="motivation" />
-            </div>
-            <button onClick={savePartial} className="ce-save-btn" style={S.btnSaveHeader} title="지금까지 작성한 내용을 Word로 저장">
-              저장(.doc)
-            </button>
-          </div>
-        </div>
-
         <div style={S.cardLarge}>
           <p style={S.brandEyebrow}>CAREERENGINEER · 2라운드 진입</p>
           <h2 style={{ ...S.h2, textAlign: 'center', marginBottom: SPACING.sm }}>1라운드 완료</h2>
@@ -806,7 +784,7 @@ const MotivationWorkbook = () => {
           </div>
         </div>
 
-        <p style={{ ...S.copyrightText, marginTop: SPACING.lg }}>© 2026 CareerEngineer. All Rights Reserved.</p>
+        <p style={{ ...S.copyrightText, marginTop: SPACING.lg }}>© 2026 CareerEngineer All Rights Reserved.</p>
       <StickyFooter />
       </div>
     </div>
@@ -819,27 +797,6 @@ const MotivationWorkbook = () => {
     <div style={S.page}>
       <FocusStyles />
       <div style={S.container}>
-        <div style={S.headerSticky}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: SPACING.base, flexWrap: 'wrap' }}>
-            <CELockupA height={32} />
-            <div style={{ position: 'relative', flex: 1, display: 'flex', justifyContent: 'center' }}>
-              <button onClick={() => setShowStepNav(v => !v)} style={{ 
-                background: COLORS.bgAlt, border: 'none', cursor: 'pointer',
-                fontSize: FONT.size.sm, color: COLORS.accent, textAlign: 'center',
-                padding: '4px 12px', borderRadius: 4, fontFamily: FONT.family,
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 4,
-              }} title="전체 7단계 보기" className="ce-step-nav-trigger">
-                STEP 4 · 지원동기 작성
-                <span style={{ fontSize: FONT.size.xs, color: COLORS.accent, opacity: 1, transform: showStepNav ? 'rotate(180deg)' : 'none', transition: 'transform 150ms' }}>▾</span>
-              </button>
-              <StepNavigatorDropdown open={showStepNav} onClose={() => setShowStepNav(false)} currentKey="motivation" />
-            </div>
-            <button onClick={savePartial} className="ce-save-btn" style={S.btnSaveHeader} title="지금까지 작성한 내용을 Word로 저장">
-              저장(.doc)
-            </button>
-          </div>
-        </div>
-
         <div style={S.cardLarge}>
           {/* 완성 헤더 (SUCCESS) */}
           <div style={{ textAlign: 'center', marginBottom: SPACING.xl }}>
@@ -1015,8 +972,8 @@ const MotivationWorkbook = () => {
 
         {/* 저작권 푸터 */}
         <div style={S.copyrightWrap}>
-          <p style={S.copyrightText}>© 2026 CareerEngineer. All Rights Reserved.</p>
-          <p style={S.copyrightWarn}>저작권법에 의하여 보호받는 저작물이므로 무단 전재와 무단 복제를 금합니다. 이 자료는 구매하신 분의 취업을 위한 개인 학습 용도로 자유롭게 활용하실 수 있으나, 자료의 전부 또는 일부를 다른 사람에게 공유하거나, 복제·재판매·재배포하는 것은 금지되어 있습니다. <strong>이를 위반할 경우 관련 법률에 따라 민·형사상 책임을 질 수 있습니다.</strong></p>
+          <p style={S.copyrightText}>© 2026 CareerEngineer All Rights Reserved.</p>
+          <p style={S.copyrightWarn}>이 워크북은 저작권법에 의해 보호받는 저작물입니다. 워크북의 전체 또는 일부를 저작권자의 사전 서면 동의 없이 무단으로 복제, 배포, 전송, 전시, 방송하거나 수정 및 편집하는 행위는 금지되어 있으며, 위반 시 관련 법령에 따라 법적인 책임을 질 수 있습니다. 오직 개인적인 용도로만 사용해야 하며, 상업적 목적의 사용 및 무단 배포를 엄격히 금지합니다.</p>
         </div>
       <StickyFooter />
       </div>
@@ -1088,7 +1045,7 @@ const MotivationWorkbook = () => {
               const isPast = phaseOrder[currentPhase] > phaseOrder[phase];
               return (
                 <button key={phase} onClick={() => {
-                  if (phase === 'round2') {
+                  if (phase === 'round2' && selectedSteps.length === 0) {
                     setCurrentPhase('evaluation');
                   } else {
                     setCurrentPhase(phase);
@@ -1207,7 +1164,7 @@ const MotivationWorkbook = () => {
           </div>
         </div>
 
-        <p style={{ ...S.copyrightText, marginTop: SPACING.lg }}>© 2026 CareerEngineer. All Rights Reserved.</p>
+        <p style={{ ...S.copyrightText, marginTop: SPACING.lg }}>© 2026 CareerEngineer All Rights Reserved.</p>
       </div>
     </div>
   );
