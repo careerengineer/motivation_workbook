@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.47620019.css",
-    "main.js": "/static/js/main.6471d772.js",
-    "static/js/453.deb7a222.chunk.js": "/static/js/453.deb7a222.chunk.js",
-    "index.html": "/index.html",
-    "main.47620019.css.map": "/static/css/main.47620019.css.map",
-    "main.6471d772.js.map": "/static/js/main.6471d772.js.map",
-    "453.deb7a222.chunk.js.map": "/static/js/453.deb7a222.chunk.js.map"
+    "main.css": "/motivation_workbook/static/css/main.47620019.css",
+    "main.js": "/motivation_workbook/static/js/main.636488dc.js",
+    "static/js/453.deb7a222.chunk.js": "/motivation_workbook/static/js/453.deb7a222.chunk.js",
+    "index.html": "/motivation_workbook/index.html",
+    "main.47620019.css.map": "/motivation_workbook/static/css/main.47620019.css.map",
+    "main.636488dc.js.map": "/motivation_workbook/static/js/main.636488dc.js.map",
+    "453.deb7a222.chunk.js.map": "/motivation_workbook/static/js/453.deb7a222.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.47620019.css",
-    "static/js/main.6471d772.js"
+    "static/js/main.636488dc.js"
   ]
 }
