@@ -263,20 +263,167 @@ const MotivationWorkbook = () => {
   };
 
   const downloadFinalText = () => {
-    const today = new Date().toISOString().slice(0,10); const h = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>지원동기 - ${basicInfo.company || '회사'}</title><style>body{font-family:'Pretendard','맑은 고딕','Malgun Gothic',sans-serif;max-width:800px;margin:0 auto;padding:50px 60px;color:#0E2750;line-height:1.9;font-size:14px}.header{text-align:center;border-bottom:3px solid #0E2750;padding-bottom:20px;margin-bottom:32px}.header h1{margin:0;font-size:26px;color:#0E2750;letter-spacing:4px;font-weight:700}.header .meta{color:#6E7A8F;font-size:13px;margin-top:10px;line-height:1.6}.header .meta strong{color:#1B3A6B}.body-content{font-size:15px;line-height:2}.body-content p{margin:0 0 1.4em 0;text-align:justify}.foot{margin-top:50px;padding-top:18px;border-top:1px solid #F2F1EC;font-size:12px;color:#6E7A8F;text-align:center;line-height:1.7}</style></head><body><div class="header"><h1>지원동기</h1><div class="meta">${basicInfo.company ? `<strong>${basicInfo.company}</strong>` : ''} ${basicInfo.position ? `${basicInfo.company ? '· ' : ''}${basicInfo.position} 지원` : ''}</div></div><div class="body-content">${finalText.split('\n\n').map(x => `<p>${x.replace(/\n/g,'<br>')}</p>`).join('\n')}</div><div class="foot">작성일 · ${today}<br>CareerEngineer 지원동기 워크북으로 작성 · © 2026 CareerEngineer. All Rights Reserved.</div></body></html>`;
-    const b = new Blob([h], { type: 'application/msword;charset=utf-8' }); const u = URL.createObjectURL(b);
-    const a = document.createElement('a'); a.href = u; a.download = `${basicInfo.company || '회사'}_지원동기.doc`; a.click();
-    URL.revokeObjectURL(u); setDownloadSuccess(true); setTimeout(() => setDownloadSuccess(false), 5000);
+    const today = new Date().toISOString().slice(0,10);
+    const esc = (s) => (s || '').toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const br = (s) => esc(s).replace(/\n/g, '<br/>');
+    
+    // 본문: finalText가 있으면 단락별 표시, 없으면 placeholder
+    const bodyContent = finalText && finalText.trim()
+      ? finalText.split('\n\n').filter(x => x.trim()).map(x => `<p style="font-size:11pt;line-height:2.0;color:#0E2750;margin:0 0 14pt 0;text-align:justify;">${br(x)}</p>`).join('')
+      : `<p style="font-size:11pt;line-height:2.0;color:#6E7A8F;margin:0 0 14pt 0;font-style:italic;">[지원동기 본문이 여기에 들어갑니다.]</p>`;
+    
+    // 메타 정보
+    const metaLine = (basicInfo.company || basicInfo.position) 
+      ? `<p style="text-align:center;color:#1B3A6B;font-size:12pt;font-weight:bold;margin:0 0 24pt 0;">${esc(basicInfo.company || '')}${basicInfo.company && basicInfo.position ? ' · ' : ''}${basicInfo.position ? esc(basicInfo.position) + ' 지원' : ''}</p>`
+      : '';
+    
+    // 작성 노트 (모든 Q 답변 정리 — 빈 답변도 항목명 표시)
+    const sh = (t) => `<p style="font-size:13pt;font-weight:bold;color:#1B3A6B;margin:18pt 0 8pt 0;padding-bottom:4pt;border-bottom:1pt solid #1B3A6B;">${esc(t)}</p>`;
+    const noteItem = (label, val) => `
+      <div style="margin:8pt 0;">
+        <p style="font-size:11pt;font-weight:bold;color:#0E2750;margin:0 0 4pt 0;padding-left:10pt;border-left:3pt solid #C9A86A;">${esc(label)}</p>
+        ${val && val.trim() 
+          ? `<p style="font-size:11pt;line-height:1.7;color:#0E2750;margin:0 0 0 13pt;">${br(val)}</p>` 
+          : `<p style="font-size:11pt;line-height:1.7;color:#6E7A8F;margin:0 0 0 13pt;font-style:italic;">[작성 전]</p>`}
+      </div>`;
+    const notesSection = `
+      ${sh('Q1. 왜 이 직무인가')}
+      ${noteItem('Q1-1. 관심 계기', answers.q1_1)}
+      ${noteItem('Q1-2. 가치관 연결', answers.q1_2)}
+      ${noteItem('Q1-3. 성장 경로', answers.q1_3)}
+      ${sh('Q2. 왜 이 회사인가')}
+      ${noteItem('Q2-1. 회사의 차별점', answers.q2_1)}
+      ${noteItem('Q2-2. 가치관 + 회사 비전', answers.q2_2)}
+      ${sh('Q3. 무엇을, 왜 준비했는가')}
+      ${noteItem('Q3-1. 필요한 역량', answers.q3_1)}
+      ${noteItem('Q3-2. 준비 과정', answers.q3_2)}
+      ${noteItem('Q3-3. 업무 연결', answers.q3_3)}
+      ${sh('Q4. 어떻게 기여할 것인가')}
+      ${noteItem('Q4-1. 동기 → 역량 → 기여', answers.q4_1)}
+      ${noteItem('Q4-2. 회사 과제 연결', answers.q4_2)}
+      ${sh('3라운드 — 연결 문장')}
+      ${noteItem('Q1 → Q2 연결 (왜 직무 → 왜 회사)', answers.connect_q1q2)}
+      ${noteItem('Q2 → Q3 연결 (왜 회사 → 무엇을 준비)', answers.connect_q2q3)}
+      ${noteItem('Q3 → Q4 연결 (준비 → 기여)', answers.connect_q3q4)}`;
+    
+    const h = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="ProgId" content="Word.Document">
+<title>지원동기</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotPromptForConvert/></w:WordDocument></xml><![endif]-->
+<style>
+@page Section1 { size: A4; margin: 2.5cm 2cm; mso-page-orientation: portrait; }
+div.Section1 { page: Section1; }
+body { font-family: '맑은 고딕', 'Malgun Gothic', sans-serif; font-size: 11pt; color: #0E2750; line-height: 1.7; }
+p { margin: 0 0 8pt 0; }
+</style>
+</head>
+<body lang="KO-KR">
+<div class="Section1">
+<p style="text-align:right;color:#6E7A8F;font-size:10pt;margin:0 0 4pt 0;">작성일 · ${today}</p>
+<p style="font-size:22pt;font-weight:bold;color:#0E2750;text-align:center;margin:0 0 6pt 0;padding-bottom:14pt;border-bottom:3pt solid #0E2750;letter-spacing:8pt;">지 원 동 기</p>
+${metaLine}
+<div style="margin-top:24pt;">${bodyContent}</div>
+
+<p style="page-break-before:always;">&nbsp;</p>
+
+<p style="font-size:14pt;font-weight:bold;color:#0E2750;margin:0 0 6pt 0;padding-bottom:6pt;border-bottom:2pt solid #0E2750;">작성 노트 — 단계별 답변</p>
+<p style="font-size:10pt;color:#6E7A8F;margin:0 0 14pt 0;font-style:italic;">아래는 자소서 작성 과정에서 정리한 모든 답변입니다. 다음에 이어 작업하거나 다른 자소서에 활용할 때 참고하세요.</p>
+
+${notesSection}
+
+</div></body></html>`;
+    const BOM = '\uFEFF';
+    const b = new Blob([BOM + h], { type: 'application/msword' });
+    const u = URL.createObjectURL(b);
+    const a = document.createElement('a'); a.href = u;
+    a.download = `지원동기_${(basicInfo.company || '미입력').replace(/[^a-zA-Z0-9가-힣\s]/g, '_')}_${today}.doc`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(u), 1000);
+    setDownloadSuccess(true); setTimeout(() => setDownloadSuccess(false), 5000);
   };
 
-  // 중간 저장 (1·2·3라운드 수시 저장 — PART 7-7)
+  // 임시저장 — 작성 중간 모든 답변을 항목별로 정리 (빈 답변도 항목명은 표시)
   const savePartial = () => {
-    const raw = getRawText();
     const today = new Date().toISOString().slice(0,10);
-    const h = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>지원동기 임시저장</title><style>body{font-family:'맑은 고딕',sans-serif;line-height:1.7;padding:40px;white-space:pre-wrap}</style></head><body>${raw}</body></html>`;
-    const b = new Blob([h], { type: 'application/msword;charset=utf-8' }); const u = URL.createObjectURL(b);
-    const a = document.createElement('a'); a.href = u; a.download = `${basicInfo.company || '회사'}_지원동기_임시저장_${today}.doc`; a.click();
-    URL.revokeObjectURL(u); setDownloadSuccess(true); setTimeout(() => setDownloadSuccess(false), 3000);
+    const esc = (s) => (s || '').toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const br = (s) => esc(s).replace(/\n/g, '<br/>');
+    
+    // 섹션 헤더
+    const sh = (t) => `<p style="font-size:14pt;font-weight:bold;color:#0E2750;margin:24pt 0 10pt 0;padding-bottom:6pt;border-bottom:2pt solid #0E2750;">${esc(t)}</p>`;
+    // 항목 (답변 있으면 그대로, 없으면 안내문)
+    const item = (label, val) => `
+      <div style="margin:14pt 0 14pt 0;">
+        <p style="font-size:11pt;font-weight:bold;color:#1B3A6B;margin:0 0 6pt 0;padding-left:10pt;border-left:3pt solid #C9A86A;">${esc(label)}</p>
+        ${val && val.trim() 
+          ? `<p style="font-size:11pt;line-height:1.8;color:#0E2750;margin:0 0 0 13pt;">${br(val)}</p>` 
+          : `<p style="font-size:11pt;line-height:1.8;color:#6E7A8F;margin:0 0 0 13pt;font-style:italic;">[작성 전]</p>`}
+      </div>`;
+    
+    // 메타
+    const metaLine = (basicInfo.company || basicInfo.position || basicInfo.industry) 
+      ? `<p style="text-align:center;color:#1B3A6B;font-size:12pt;font-weight:bold;margin:0 0 24pt 0;">${esc(basicInfo.company || '')}${basicInfo.company && basicInfo.position ? ' · ' : ''}${basicInfo.position ? esc(basicInfo.position) + ' 지원' : ''}${basicInfo.industry ? `<br/><span style="color:#6E7A8F;font-size:10pt;font-weight:normal;">산업: ${esc(basicInfo.industry)}</span>` : ''}</p>`
+      : '';
+    
+    // 최종 본문 (있으면 별도 섹션)
+    const finalSection = finalText && finalText.trim() 
+      ? `${sh('최종 통합 본문')}<div style="padding:16pt 20pt;background:#F2F1EC;border-left:3pt solid #1B3A6B;margin:6pt 0 14pt 0;">${finalText.split('\n\n').filter(x => x.trim()).map(x => `<p style="font-size:11pt;line-height:1.9;color:#0E2750;margin:0 0 12pt 0;">${br(x)}</p>`).join('')}</div>`
+      : '';
+    
+    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="ProgId" content="Word.Document">
+<title>지원동기 작성 노트</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotPromptForConvert/></w:WordDocument></xml><![endif]-->
+<style>
+@page Section1 { size: A4; margin: 2.5cm 2cm; mso-page-orientation: portrait; }
+div.Section1 { page: Section1; }
+body { font-family: '맑은 고딕', 'Malgun Gothic', sans-serif; font-size: 11pt; color: #0E2750; line-height: 1.7; }
+p { margin: 0 0 8pt 0; }
+</style>
+</head>
+<body lang="KO-KR">
+<div class="Section1">
+<p style="text-align:right;color:#6E7A8F;font-size:10pt;margin:0 0 4pt 0;">작성일 · ${today}</p>
+<p style="font-size:22pt;font-weight:bold;color:#0E2750;text-align:center;margin:0 0 6pt 0;padding-bottom:14pt;border-bottom:3pt solid #0E2750;letter-spacing:6pt;">지원동기 작성 노트</p>
+${metaLine}
+
+${finalSection}
+
+${sh('Q1. 왜 이 직무인가')}
+${item('Q1-1. 관심 계기', answers.q1_1)}
+${item('Q1-2. 가치관 연결', answers.q1_2)}
+${item('Q1-3. 성장 경로', answers.q1_3)}
+
+${sh('Q2. 왜 이 회사인가')}
+${item('Q2-1. 회사의 차별점', answers.q2_1)}
+${item('Q2-2. 가치관 + 회사 비전', answers.q2_2)}
+
+${sh('Q3. 무엇을, 왜 준비했는가')}
+${item('Q3-1. 필요한 역량', answers.q3_1)}
+${item('Q3-2. 준비 과정', answers.q3_2)}
+${item('Q3-3. 업무 연결', answers.q3_3)}
+
+${sh('Q4. 어떻게 기여할 것인가')}
+${item('Q4-1. 동기 → 역량 → 기여', answers.q4_1)}
+${item('Q4-2. 회사 과제 연결', answers.q4_2)}
+
+${sh('3라운드 — 연결 문장')}
+${item('Q1 → Q2 연결 (왜 직무 → 왜 회사)', answers.connect_q1q2)}
+${item('Q2 → Q3 연결 (왜 회사 → 무엇을 준비)', answers.connect_q2q3)}
+${item('Q3 → Q4 연결 (준비 → 기여)', answers.connect_q3q4)}
+
+</div></body></html>`;
+    const BOM = '\uFEFF';
+    const b = new Blob([BOM + html], { type: 'application/msword' });
+    const u = URL.createObjectURL(b);
+    const a = document.createElement('a'); a.href = u;
+    a.download = `지원동기_작성노트_${(basicInfo.company || '미입력').replace(/[^a-zA-Z0-9가-힣\s]/g, '_')}_${today}.doc`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(u), 1000);
+    setDownloadSuccess(true); setTimeout(() => setDownloadSuccess(false), 3000);
   };
 
   const getRawText = () => `원본 답변 모음\n\n[기본 정보]\n산업: ${basicInfo.industry||'-'}\n직무: ${basicInfo.position||'-'}\n회사: ${basicInfo.company||'-'}\n\n[Q1: 왜 이 직무인가]\nQ1-1 관심 계기: ${answers.q1_1||'-'}\nQ1-2 가치관 연결: ${answers.q1_2||'-'}\nQ1-3 성장 경로: ${answers.q1_3||'-'}\n\n[Q2: 왜 이 회사인가]\nQ2-1 차별점: ${answers.q2_1||'-'}\nQ2-2 가치관+회사: ${answers.q2_2||'-'}\n\n[Q3: 무엇을 왜 준비]\nQ3-1 필요 역량: ${answers.q3_1||'-'}\nQ3-2 준비 과정: ${answers.q3_2||'-'}\nQ3-3 업무 연결: ${answers.q3_3||'-'}\n\n[Q4: 어떻게 기여]\nQ4-1 동기→역량→기여: ${answers.q4_1||'-'}\nQ4-2 회사 과제 연결: ${answers.q4_2||'-'}\n\n[3라운드 연결]\nQ1→Q2: ${answers.connect_q1q2||'-'}\nQ2→Q3: ${answers.connect_q2q3||'-'}\nQ3→Q4: ${answers.connect_q3q4||'-'}`;
