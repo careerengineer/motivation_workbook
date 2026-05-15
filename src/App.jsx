@@ -1,15 +1,4 @@
-import React, { useState } from 'react';
-
-
-// __toDocxBlob: HTML을 실제 .docx Blob으로 변환 (모바일 Word 호환)
-// index.html 의 html-docx-js CDN 스크립트로 window.htmlDocx 가 제공됨
-const __toDocxBlob = (html) => {
-  if (typeof window !== 'undefined' && window.htmlDocx && window.htmlDocx.asBlob) {
-    try { return window.htmlDocx.asBlob(html); } catch (e) { console.error('htmlDocx failed:', e); }
-  }
-  return new Blob(['\ufeff' + html], { type: 'application/msword' });
-};
-
+import React, { useState, useEffect } from 'react';
 
 // 멘토링·컨설팅 URL 상수 (작업 18: URL 상수화)
 const MENTORING_URLS = {
@@ -156,6 +145,82 @@ const MotivationWorkbook = () => {
   const [checklistState, setChecklistState] = useState({});
   const [basicInfo, setBasicInfo] = useState({ industry: '', position: '', company: '' });
   const [answers, setAnswers] = useState({});
+  const [autoSaveStatus, setAutoSaveStatus] = useState('');
+  const [hasRestored, setHasRestored] = useState(false);
+
+  // 자동 저장 키
+  const STORAGE_KEY = 'careerengineer_motivation_v1';
+
+  // 페이지 로드 시 저장된 데이터 자동 복구
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data.answers && Object.keys(data.answers).length > 0) {
+          const savedDate = data.savedAt ? new Date(data.savedAt).toLocaleString('ko-KR') : '이전';
+          if (window.confirm(`이전에 작성한 내용이 있습니다 (${savedDate}).\n불러올까요?\n\n[확인] 이어서 작성  [취소] 새로 시작`)) {
+            setAnswers(data.answers || {});
+            if (data.basicInfo) setBasicInfo(data.basicInfo);
+            if (data.finalText) setFinalText(data.finalText);
+            if (data.checklistState) setChecklistState(data.checklistState);
+            if (data.selectedSteps) setSelectedSteps(data.selectedSteps);
+            if (data.currentPhase) setCurrentPhase(data.currentPhase);
+            if (typeof data.currentStep === 'number') setCurrentStep(data.currentStep);
+            if (data.showIntro === false) setShowIntro(false);
+            setHasRestored(true);
+            setAutoSaveStatus('✓ 이전 작성 내용을 불러왔습니다');
+            setTimeout(() => setAutoSaveStatus(''), 5000);
+          } else {
+            localStorage.removeItem(STORAGE_KEY);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('자동 복구 실패:', e);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 데이터 변경 시 자동 저장 (디바운스 1초)
+  useEffect(() => {
+    if (Object.keys(answers).length === 0 && !finalText) return;
+    
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          answers, basicInfo, finalText, checklistState, selectedSteps,
+          currentPhase, currentStep, showIntro,
+          savedAt: new Date().toISOString()
+        }));
+        setAutoSaveStatus('✓ 자동 저장됨');
+        setTimeout(() => setAutoSaveStatus(''), 2000);
+      } catch (e) {
+        console.warn('자동 저장 실패:', e);
+        setAutoSaveStatus('⚠ 저장 공간 부족');
+      }
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, [answers, basicInfo, finalText, checklistState, selectedSteps, currentPhase, currentStep, showIntro]);
+
+  // 저장된 데이터 초기화
+  const clearSavedData = () => {
+    if (window.confirm('저장된 모든 작성 내용을 삭제하고 처음부터 다시 시작합니다.\n\n계속하시겠습니까?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      setAnswers({});
+      setBasicInfo({ industry: '', position: '', company: '' });
+      setFinalText('');
+      setChecklistState({});
+      setSelectedSteps([]);
+      setCurrentPhase('round1');
+      setCurrentStep(0);
+      setShowIntro(true);
+      setHasRestored(false);
+      setAutoSaveStatus('✓ 초기화 완료');
+      setTimeout(() => setAutoSaveStatus(''), 3000);
+    }
+  };
 
   // ── 1라운드 ────────────────────────────────────────────────
   const round1Steps = [
@@ -273,168 +338,166 @@ const MotivationWorkbook = () => {
     return p.join('\n\n');
   };
 
-  const downloadFinalText = () => {
-    const today = new Date().toISOString().slice(0,10);
-    const esc = (s) => (s || '').toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const br = (s) => esc(s).replace(/\n/g, '<br/>');
-    
-    // 본문: finalText가 있으면 단락별 표시, 없으면 placeholder
-    const bodyContent = finalText && finalText.trim()
-      ? finalText.split('\n\n').filter(x => x.trim()).map(x => `<p style="font-size:11pt;line-height:2.0;color:#0E2750;margin:0 0 14pt 0;text-align:justify;">${br(x)}</p>`).join('')
-      : `<p style="font-size:11pt;line-height:2.0;color:#6E7A8F;margin:0 0 14pt 0;font-style:italic;">[지원동기 본문이 여기에 들어갑니다.]</p>`;
-    
-    // 메타 정보
-    const metaLine = (basicInfo.company || basicInfo.position) 
-      ? `<p style="text-align:center;color:#1B3A6B;font-size:12pt;font-weight:bold;margin:0 0 24pt 0;">${esc(basicInfo.company || '')}${basicInfo.company && basicInfo.position ? ' · ' : ''}${basicInfo.position ? esc(basicInfo.position) + ' 지원' : ''}</p>`
-      : '';
-    
-    // 작성 노트 (모든 Q 답변 정리 — 빈 답변도 항목명 표시)
-    const sh = (t) => `<p style="font-size:13pt;font-weight:bold;color:#1B3A6B;margin:18pt 0 8pt 0;padding-bottom:4pt;border-bottom:1pt solid #1B3A6B;">${esc(t)}</p>`;
-    const noteItem = (label, val) => `
-      <div style="margin:8pt 0;">
-        <p style="font-size:11pt;font-weight:bold;color:#0E2750;margin:0 0 4pt 0;padding-left:10pt;border-left:3pt solid #C9A86A;">${esc(label)}</p>
-        ${val && val.trim() 
-          ? `<p style="font-size:11pt;line-height:1.7;color:#0E2750;margin:0 0 0 13pt;">${br(val)}</p>` 
-          : `<p style="font-size:11pt;line-height:1.7;color:#6E7A8F;margin:0 0 0 13pt;font-style:italic;">[작성 전]</p>`}
-      </div>`;
-    const notesSection = `
-      ${sh('Q1. 왜 이 직무인가')}
-      ${noteItem('Q1-1. 관심 계기', answers.q1_1)}
-      ${noteItem('Q1-2. 가치관 연결', answers.q1_2)}
-      ${noteItem('Q1-3. 성장 경로', answers.q1_3)}
-      ${sh('Q2. 왜 이 회사인가')}
-      ${noteItem('Q2-1. 회사의 차별점', answers.q2_1)}
-      ${noteItem('Q2-2. 가치관 + 회사 비전', answers.q2_2)}
-      ${sh('Q3. 무엇을, 왜 준비했는가')}
-      ${noteItem('Q3-1. 필요한 역량', answers.q3_1)}
-      ${noteItem('Q3-2. 준비 과정', answers.q3_2)}
-      ${noteItem('Q3-3. 업무 연결', answers.q3_3)}
-      ${sh('Q4. 어떻게 기여할 것인가')}
-      ${noteItem('Q4-1. 동기 → 역량 → 기여', answers.q4_1)}
-      ${noteItem('Q4-2. 회사 과제 연결', answers.q4_2)}
-      ${sh('3라운드 — 연결 문장')}
-      ${noteItem('Q1 → Q2 연결 (왜 직무 → 왜 회사)', answers.connect_q1q2)}
-      ${noteItem('Q2 → Q3 연결 (왜 회사 → 무엇을 준비)', answers.connect_q2q3)}
-      ${noteItem('Q3 → Q4 연결 (준비 → 기여)', answers.connect_q3q4)}`;
-    
-    const h = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="ProgId" content="Word.Document">
-<title>지원동기</title>
-<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotPromptForConvert/></w:WordDocument></xml><![endif]-->
-<style>
-@page Section1 { size: A4; margin: 2.5cm 2cm; mso-page-orientation: portrait; }
-div.Section1 { page: Section1; }
-body { font-family: '맑은 고딕', 'Malgun Gothic', sans-serif; font-size: 11pt; color: #0E2750; line-height: 1.7; }
-p { margin: 0 0 8pt 0; }
-</style>
-</head>
-<body lang="KO-KR">
-<div class="Section1">
-<p style="text-align:right;color:#6E7A8F;font-size:10pt;margin:0 0 4pt 0;">작성일 · ${today}</p>
-<p style="font-size:22pt;font-weight:bold;color:#0E2750;text-align:center;margin:0 0 6pt 0;padding-bottom:14pt;border-bottom:3pt solid #0E2750;letter-spacing:8pt;">지 원 동 기</p>
-${metaLine}
-<div style="margin-top:24pt;">${bodyContent}</div>
+  // docx 라이브러리 동적 로드 (CDN)
+  const loadDocxLib = () => new Promise((resolve, reject) => {
+    if (window.docx) return resolve(window.docx);
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/docx@9.6.1/build/index.umd.min.js';
+    script.onload = () => {
+      if (window.docx) resolve(window.docx);
+      else reject(new Error('docx 라이브러리 로드 실패'));
+    };
+    script.onerror = () => reject(new Error('docx 라이브러리 다운로드 실패'));
+    document.head.appendChild(script);
+  });
 
-<p style="page-break-before:always;">&nbsp;</p>
-
-<p style="font-size:14pt;font-weight:bold;color:#0E2750;margin:0 0 6pt 0;padding-bottom:6pt;border-bottom:2pt solid #0E2750;">작성 노트 — 단계별 답변</p>
-<p style="font-size:10pt;color:#6E7A8F;margin:0 0 14pt 0;font-style:italic;">아래는 자소서 작성 과정에서 정리한 모든 답변입니다. 다음에 이어 작업하거나 다른 자소서에 활용할 때 참고하세요.</p>
-
-${notesSection}
-
-</div></body></html>`;
-    const BOM = '\uFEFF';
-    const b = __toDocxBlob(h);
-    const u = URL.createObjectURL(b);
-    const a = document.createElement('a'); a.href = u;
-    a.download = `지원동기_${(basicInfo.company || '미입력').replace(/[^a-zA-Z0-9가-힣\s]/g, '_')}_${today}.docx`;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(u), 1000);
-    setDownloadSuccess(true); setTimeout(() => setDownloadSuccess(false), 5000);
+  const downloadFinalText = async () => {
+    try {
+      const docxLib = await loadDocxLib();
+      const { Document, Paragraph, TextRun, AlignmentType, BorderStyle, Packer } = docxLib;
+      const today = new Date().toISOString().slice(0,10);
+      
+      // 스타일 헬퍼
+      const titleP = (t) => new Paragraph({
+        children: [new TextRun({ text: t, bold: true, size: 44, font: '맑은 고딕', color: '0E2750', characterSpacing: 200 })],
+        alignment: AlignmentType.CENTER,
+        spacing: { before: 200, after: 240 },
+        border: { bottom: { style: BorderStyle.SINGLE, size: 24, color: '0E2750', space: 6 } }
+      });
+      const subtitleP = (t) => new Paragraph({
+        children: [new TextRun({ text: t, bold: true, size: 24, font: '맑은 고딕', color: '1B3A6B' })],
+        alignment: AlignmentType.CENTER,
+        spacing: { before: 200, after: 480 }
+      });
+      const bodyP = (t) => new Paragraph({
+        children: t.split('\n').flatMap((line, i) => i === 0 ? [new TextRun({ text: line, size: 22, font: '맑은 고딕', color: '0E2750' })] : [new TextRun({ break: 1, text: line, size: 22, font: '맑은 고딕', color: '0E2750' })]),
+        spacing: { before: 100, after: 280, line: 400 },
+        alignment: AlignmentType.JUSTIFIED
+      });
+      const dateP = () => new Paragraph({
+        children: [new TextRun({ text: '작성일 · ' + today, size: 20, font: '맑은 고딕', color: '6E7A8F' })],
+        alignment: AlignmentType.RIGHT,
+        spacing: { after: 80 }
+      });
+      const sectionH = (t) => new Paragraph({
+        children: [new TextRun({ text: t, bold: true, size: 28, font: '맑은 고딕', color: '0E2750' })],
+        spacing: { before: 480, after: 200 },
+        border: { bottom: { style: BorderStyle.SINGLE, size: 12, color: '0E2750', space: 4 } }
+      });
+      const subH = (t) => new Paragraph({
+        children: [new TextRun({ text: t, bold: true, size: 24, font: '맑은 고딕', color: '1B3A6B' })],
+        spacing: { before: 360, after: 120 },
+        border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: '1B3A6B', space: 4 } }
+      });
+      const labelP = (t) => new Paragraph({
+        children: [new TextRun({ text: t, bold: true, size: 22, font: '맑은 고딕', color: '1B3A6B' })],
+        spacing: { before: 200, after: 80 },
+        border: { left: { style: BorderStyle.SINGLE, size: 24, color: 'C9A86A', space: 8 } },
+        indent: { left: 200 }
+      });
+      const labelBodyP = (t) => new Paragraph({
+        children: (t || '').split('\n').flatMap((line, i) => i === 0 ? [new TextRun({ text: line, size: 22, font: '맑은 고딕', color: '0E2750' })] : [new TextRun({ break: 1, text: line, size: 22, font: '맑은 고딕', color: '0E2750' })]),
+        spacing: { before: 0, after: 160, line: 360 },
+        indent: { left: 360 }
+      });
+      const placeholderP = (t) => new Paragraph({
+        children: [new TextRun({ text: t, italic: true, size: 22, font: '맑은 고딕', color: '6E7A8F' })],
+        spacing: { before: 0, after: 160, line: 360 },
+        indent: { left: 360 }
+      });
+      
+      const children = [dateP(), titleP('지 원 동 기')];
+      
+      // 회사·직무
+      if (basicInfo.company || basicInfo.position) {
+        const sub = (basicInfo.company || '') + 
+          (basicInfo.company && basicInfo.position ? ' · ' : '') +
+          (basicInfo.position ? basicInfo.position + ' 지원' : '');
+        children.push(subtitleP(sub));
+      }
+      
+      // === 제출용 본문 ===
+      if (finalText && finalText.trim()) {
+        finalText.split('\n\n').filter(x => x.trim()).forEach(para => {
+          children.push(bodyP(para));
+        });
+      } else {
+        children.push(placeholderP('[지원동기 본문이 여기에 들어갑니다.]'));
+      }
+      
+      // === 작성 노트 (페이지 분리) ===
+      children.push(new Paragraph({
+        children: [new TextRun({ text: '', size: 22 })],
+        pageBreakBefore: true
+      }));
+      children.push(new Paragraph({
+        children: [new TextRun({ text: '작성 노트 — 단계별 답변', bold: true, size: 28, font: '맑은 고딕', color: '0E2750' })],
+        spacing: { before: 0, after: 100 },
+        border: { bottom: { style: BorderStyle.SINGLE, size: 12, color: '0E2750', space: 4 } }
+      }));
+      children.push(new Paragraph({
+        children: [new TextRun({ text: '아래는 자소서 작성 과정에서 정리한 모든 답변입니다. 다음에 이어 작업하거나 다른 자소서에 활용할 때 참고하세요.', italic: true, size: 20, font: '맑은 고딕', color: '6E7A8F' })],
+        spacing: { before: 0, after: 280 }
+      }));
+      
+      // round1Steps 자동 펼침
+      round1Steps.slice(1).forEach(step => {
+        const hasAny = (step.questions || []).some(q => answers[q.id]);
+        // 항목 있는 step만 표시 (질문 자체가 있으면 모두 표시)
+        if (!step.questions || step.questions.length === 0) return;
+        children.push(subH(step.title));
+        step.questions.forEach(q => {
+          children.push(labelP(q.label || q.id));
+          const ans = answers[q.id];
+          if (ans && ans.trim()) {
+            children.push(labelBodyP(ans));
+          } else {
+            children.push(placeholderP('[작성 전]'));
+          }
+        });
+      });
+      
+      // round3Questions (있으면)
+      if (typeof round3Questions !== 'undefined' && Array.isArray(round3Questions) && round3Questions.length > 0) {
+        children.push(subH('연결 문장'));
+        round3Questions.forEach(q => {
+          children.push(labelP(q.label || q.id));
+          const ans = answers[q.id];
+          if (ans && ans.trim()) {
+            children.push(labelBodyP(ans));
+          } else {
+            children.push(placeholderP('[작성 전]'));
+          }
+        });
+      }
+      
+      const doc = new Document({
+        creator: '',
+        title: '지원동기',
+        sections: [{
+          properties: { page: { margin: { top: 1400, right: 1133, bottom: 1400, left: 1133 } } },
+          children: children
+        }]
+      });
+      
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `지원동기_${(basicInfo.company || '미입력').replace(/[^a-zA-Z0-9가-힣\s]/g, '_')}_${today}.docx`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setDownloadSuccess(true); setTimeout(() => setDownloadSuccess(false), 5000);
+    } catch (err) {
+      console.error('docx 생성 실패:', err);
+      alert('워드 문서 생성에 실패했습니다.\n' + (err.message || ''));
+    }
   };
 
   // 임시저장 — 작성 중간 모든 답변을 항목별로 정리 (빈 답변도 항목명은 표시)
   const savePartial = () => {
-    const today = new Date().toISOString().slice(0,10);
-    const esc = (s) => (s || '').toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const br = (s) => esc(s).replace(/\n/g, '<br/>');
-    
-    // 섹션 헤더
-    const sh = (t) => `<p style="font-size:14pt;font-weight:bold;color:#0E2750;margin:24pt 0 10pt 0;padding-bottom:6pt;border-bottom:2pt solid #0E2750;">${esc(t)}</p>`;
-    // 항목 (답변 있으면 그대로, 없으면 안내문)
-    const item = (label, val) => `
-      <div style="margin:14pt 0 14pt 0;">
-        <p style="font-size:11pt;font-weight:bold;color:#1B3A6B;margin:0 0 6pt 0;padding-left:10pt;border-left:3pt solid #C9A86A;">${esc(label)}</p>
-        ${val && val.trim() 
-          ? `<p style="font-size:11pt;line-height:1.8;color:#0E2750;margin:0 0 0 13pt;">${br(val)}</p>` 
-          : `<p style="font-size:11pt;line-height:1.8;color:#6E7A8F;margin:0 0 0 13pt;font-style:italic;">[작성 전]</p>`}
-      </div>`;
-    
-    // 메타
-    const metaLine = (basicInfo.company || basicInfo.position || basicInfo.industry) 
-      ? `<p style="text-align:center;color:#1B3A6B;font-size:12pt;font-weight:bold;margin:0 0 24pt 0;">${esc(basicInfo.company || '')}${basicInfo.company && basicInfo.position ? ' · ' : ''}${basicInfo.position ? esc(basicInfo.position) + ' 지원' : ''}${basicInfo.industry ? `<br/><span style="color:#6E7A8F;font-size:10pt;font-weight:normal;">산업: ${esc(basicInfo.industry)}</span>` : ''}</p>`
-      : '';
-    
-    // 최종 본문 (있으면 별도 섹션)
-    const finalSection = finalText && finalText.trim() 
-      ? `${sh('최종 통합 본문')}<div style="padding:16pt 20pt;background:#F2F1EC;border-left:3pt solid #1B3A6B;margin:6pt 0 14pt 0;">${finalText.split('\n\n').filter(x => x.trim()).map(x => `<p style="font-size:11pt;line-height:1.9;color:#0E2750;margin:0 0 12pt 0;">${br(x)}</p>`).join('')}</div>`
-      : '';
-    
-    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="ProgId" content="Word.Document">
-<title>지원동기 작성 노트</title>
-<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotPromptForConvert/></w:WordDocument></xml><![endif]-->
-<style>
-@page Section1 { size: A4; margin: 2.5cm 2cm; mso-page-orientation: portrait; }
-div.Section1 { page: Section1; }
-body { font-family: '맑은 고딕', 'Malgun Gothic', sans-serif; font-size: 11pt; color: #0E2750; line-height: 1.7; }
-p { margin: 0 0 8pt 0; }
-</style>
-</head>
-<body lang="KO-KR">
-<div class="Section1">
-<p style="text-align:right;color:#6E7A8F;font-size:10pt;margin:0 0 4pt 0;">작성일 · ${today}</p>
-<p style="font-size:22pt;font-weight:bold;color:#0E2750;text-align:center;margin:0 0 6pt 0;padding-bottom:14pt;border-bottom:3pt solid #0E2750;letter-spacing:6pt;">지원동기 작성 노트</p>
-${metaLine}
-
-${finalSection}
-
-${sh('Q1. 왜 이 직무인가')}
-${item('Q1-1. 관심 계기', answers.q1_1)}
-${item('Q1-2. 가치관 연결', answers.q1_2)}
-${item('Q1-3. 성장 경로', answers.q1_3)}
-
-${sh('Q2. 왜 이 회사인가')}
-${item('Q2-1. 회사의 차별점', answers.q2_1)}
-${item('Q2-2. 가치관 + 회사 비전', answers.q2_2)}
-
-${sh('Q3. 무엇을, 왜 준비했는가')}
-${item('Q3-1. 필요한 역량', answers.q3_1)}
-${item('Q3-2. 준비 과정', answers.q3_2)}
-${item('Q3-3. 업무 연결', answers.q3_3)}
-
-${sh('Q4. 어떻게 기여할 것인가')}
-${item('Q4-1. 동기 → 역량 → 기여', answers.q4_1)}
-${item('Q4-2. 회사 과제 연결', answers.q4_2)}
-
-${sh('3라운드 — 연결 문장')}
-${item('Q1 → Q2 연결 (왜 직무 → 왜 회사)', answers.connect_q1q2)}
-${item('Q2 → Q3 연결 (왜 회사 → 무엇을 준비)', answers.connect_q2q3)}
-${item('Q3 → Q4 연결 (준비 → 기여)', answers.connect_q3q4)}
-
-</div></body></html>`;
-    const BOM = '\uFEFF';
-    const b = __toDocxBlob(html);
-    const u = URL.createObjectURL(b);
-    const a = document.createElement('a'); a.href = u;
-    a.download = `지원동기_작성노트_${(basicInfo.company || '미입력').replace(/[^a-zA-Z0-9가-힣\s]/g, '_')}_${today}.docx`;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(u), 1000);
-    setDownloadSuccess(true); setTimeout(() => setDownloadSuccess(false), 3000);
+    // 메인 다운로드와 동일한 docx 생성 (모든 답변 포함)
+    downloadFinalText();
   };
 
   const getRawText = () => `원본 답변 모음\n\n[기본 정보]\n산업: ${basicInfo.industry||'-'}\n직무: ${basicInfo.position||'-'}\n회사: ${basicInfo.company||'-'}\n\n[Q1: 왜 이 직무인가]\nQ1-1 관심 계기: ${answers.q1_1||'-'}\nQ1-2 가치관 연결: ${answers.q1_2||'-'}\nQ1-3 성장 경로: ${answers.q1_3||'-'}\n\n[Q2: 왜 이 회사인가]\nQ2-1 차별점: ${answers.q2_1||'-'}\nQ2-2 가치관+회사: ${answers.q2_2||'-'}\n\n[Q3: 무엇을 왜 준비]\nQ3-1 필요 역량: ${answers.q3_1||'-'}\nQ3-2 준비 과정: ${answers.q3_2||'-'}\nQ3-3 업무 연결: ${answers.q3_3||'-'}\n\n[Q4: 어떻게 기여]\nQ4-1 동기→역량→기여: ${answers.q4_1||'-'}\nQ4-2 회사 과제 연결: ${answers.q4_2||'-'}\n\n[3라운드 연결]\nQ1→Q2: ${answers.connect_q1q2||'-'}\nQ2→Q3: ${answers.connect_q2q3||'-'}\nQ3→Q4: ${answers.connect_q3q4||'-'}`;
@@ -958,7 +1021,7 @@ const IntroStickyHeader = ({ workbookKey, stepLabel, StepNavComponent }) => {
           style={{ padding: '8px 14px', borderRadius: 8, border: 'none', fontSize: 14, fontWeight: 600, fontFamily: 'inherit', background: _INTRO_INK, color: '#fff', opacity: 0.4, cursor: 'not-allowed' }}
           title="작성을 시작하면 활성화됩니다"
         >
-          저장(.docx)
+          저장(.doc)
         </button>
       </div>
     </div>
@@ -1065,8 +1128,16 @@ const IntroPage = ({
               <StepNavigatorDropdown open={showStepNav} onClose={() => setShowStepNav(false)} currentKey="motivation" />
             </div>
             <button onClick={savePartial} className="ce-save-btn" style={S.btnSaveHeader} title="지금까지 작성한 내용을 Word로 저장">
-              저장(.docx)
+              저장(.doc)
             </button>
+            <button onClick={clearSavedData} style={{ background: 'transparent', color: '#6E7A8F', border: '1px solid #6E7A8F44', borderRadius: 10, padding: '6px 12px', fontSize: 13, fontWeight: 500, cursor: 'pointer', marginLeft: 8, whiteSpace: 'nowrap' }} title="저장된 작성 내용을 모두 지우고 처음부터 다시 시작">
+              새로 시작
+            </button>
+            {autoSaveStatus && (
+              <span style={{ fontSize: 12, color: autoSaveStatus.startsWith('⚠') ? '#C9A86A' : '#1FA47A', whiteSpace: 'nowrap', fontWeight: 500, marginLeft: 8 }}>
+                {autoSaveStatus}
+              </span>
+            )}
           </div>
         </div>
 
@@ -1139,8 +1210,16 @@ const IntroPage = ({
               <StepNavigatorDropdown open={showStepNav} onClose={() => setShowStepNav(false)} currentKey="motivation" />
             </div>
             <button onClick={savePartial} className="ce-save-btn" style={S.btnSaveHeader} title="지금까지 작성한 내용을 Word로 저장">
-              저장(.docx)
+              저장(.doc)
             </button>
+            <button onClick={clearSavedData} style={{ background: 'transparent', color: '#6E7A8F', border: '1px solid #6E7A8F44', borderRadius: 10, padding: '6px 12px', fontSize: 13, fontWeight: 500, cursor: 'pointer', marginLeft: 8, whiteSpace: 'nowrap' }} title="저장된 작성 내용을 모두 지우고 처음부터 다시 시작">
+              새로 시작
+            </button>
+            {autoSaveStatus && (
+              <span style={{ fontSize: 12, color: autoSaveStatus.startsWith('⚠') ? '#C9A86A' : '#1FA47A', whiteSpace: 'nowrap', fontWeight: 500, marginLeft: 8 }}>
+                {autoSaveStatus}
+              </span>
+            )}
           </div>
         </div>
 
@@ -1305,7 +1384,7 @@ const IntroPage = ({
 
 
           <button onClick={downloadFinalText} style={{ ...S.btnPrimary, padding: '18px 32px', fontSize: FONT.size.md, marginTop: SPACING.md }}>
-            워드 파일로 다운로드 (.docx)
+            워드 파일로 다운로드 (.doc)
           </button>
 
           {downloadSuccess && <p style={{ fontSize: FONT.size.sm, color: COLORS.green, textAlign: 'center', marginTop: SPACING.md, fontWeight: FONT.weight.semibold }}>✓ 다운로드 완료</p>}
@@ -1362,8 +1441,16 @@ const IntroPage = ({
             </div>
             {/* 우: 저장 버튼 */}
             <button onClick={savePartial} className="ce-save-btn" style={S.btnSaveHeader} title="지금까지 작성한 내용을 Word로 저장">
-              저장(.docx)
+              저장(.doc)
             </button>
+            <button onClick={clearSavedData} style={{ background: 'transparent', color: '#6E7A8F', border: '1px solid #6E7A8F44', borderRadius: 10, padding: '6px 12px', fontSize: 13, fontWeight: 500, cursor: 'pointer', marginLeft: 8, whiteSpace: 'nowrap' }} title="저장된 작성 내용을 모두 지우고 처음부터 다시 시작">
+              새로 시작
+            </button>
+            {autoSaveStatus && (
+              <span style={{ fontSize: 12, color: autoSaveStatus.startsWith('⚠') ? '#C9A86A' : '#1FA47A', whiteSpace: 'nowrap', fontWeight: 500, marginLeft: 8 }}>
+                {autoSaveStatus}
+              </span>
+            )}
           </div>
           {/* 진행 바 */}
           <div style={{ display: 'flex', alignItems: 'center', gap: SPACING.sm }}>
