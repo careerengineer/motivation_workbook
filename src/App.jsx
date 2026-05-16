@@ -252,7 +252,7 @@ const MotivationWorkbook = () => {
   // ── 2라운드 심화 ───────────────────────────────────────────
   const round2Questions = {
     1: [
-      { id: 'q2_1_1', label: 'Q1 심화-1. 현직자 인터뷰 3편 이상에서 공통적으로 강조하는 것은?', hint: '회사의 직무분석 없이는 쓸 수 없는 내용이어야 합니다', guide: { description: '현직자들이 공통적으로 말하는 것이 채용공고에 없는 진짜 핵심입니다.', diagnosis: '즉석자가진단: 현직자 3명이 공통으로 언급한 역량을 하나 이상 찾았나요?', helpQuestions: ['"[직무명] 현직자 인터뷰"로 검색', '"이게 없으면 힘들더라"고 한 것은?', '"처음엔 몰랐는데 꼭 필요하더라"는?'], ifDifficult: '직무분석에 30분만 투자하면 채용공고에서 못 찾는 인사이트를 얻습니다.', ifStillDifficult: '블라인드나 잡플래닛에서 해당 직무 관련 내용을 찾아보세요.' }, placeholder: '예: 현직 마케터 5편을 보니 공통적으로 "데이터 해석보다 타겟 언어 변환 능력이 더 중요하다"고 했습니다.', rows: 4, relatedWorkbooks: ['job_analysis'] },
+      { id: 'q2_1_1', label: 'Q1 심화-1. 현직자 인터뷰 3편 이상에서 공통적으로 강조하는 것은?', hint: '회사의 직무분석 없이는 쓸 수 없는 내용이어야 합니다', guide: { description: '현직자들이 공통적으로 말하는 것이 채용공고에 없는 진짜 핵심입니다.', diagnosis: '즉석자가진단: 현직자 3명이 공통으로 언급한 역량을 하나 이상 찾았나요?', helpQuestions: ['"[직무명] 현직자 인터뷰"로 검색', '"이게 없으면 힘들더라"고 한 것은?', '"처음엔 몰랐는데 꼭 필요하더라"는?'], ifDifficult: '직무분석에 30분만 투자하면 채용공고에서 못 찾는 인사이트를 얻습니다.', ifStillDifficult: '채용공고 분석 가이드워크북에서 직무별 핵심 키워드를 정리하는 단계별 방법을 확인하세요.' }, placeholder: '예: 현직 마케터 5편을 보니 공통적으로 "데이터 해석보다 타겟 언어 변환 능력이 더 중요하다"고 했습니다.', rows: 4, relatedWorkbooks: ['job_analysis'] },
       { id: 'q2_1_2', label: 'Q1 심화-2. 비슷한 다른 직무 2개와 비교했을 때, 왜 하필 이 직무인가요?', hint: '비교를 통해 "이 직무에서만 중요한 이유"가 드러납니다', guide: { description: '비슷한 직무와 비교하면 "왜 하필 이 직무"인지가 명확해집니다.', diagnosis: '즉석자가진단: "다른 직무에서도 하지 않나요?"에 즉답 가능한가?', helpQuestions: ['비슷한 직무 2개의 핵심 역량을 비교', '이 직무에서만 특별히 중요한 이유는?', '이 역량 없이 대체 가능한가요?'], ifDifficult: '각 직무 채용공고를 나란히 놓고 비교하세요.', ifStillDifficult: '"이 직무에서 유독 중요한 상황"을 하나 떠올려보세요.' }, placeholder: '예: 기획은 구조 설계, 영업은 관계 구축이 핵심. 마케팅은 "고객 데이터에서 행동 패턴을 읽고 메시지로 전환"이 핵심인데, 이것이 제 가치관과 가장 맞닿습니다.', rows: 4, relatedWorkbooks: ['job_analysis', 'experience'] },
       { id: 'q2_1_3', label: 'Q1 심화-3. 이 직무가 없었다면 이 가치를 어떻게 실현했을까요?', hint: '이 직무가 대체 불가능한 이유를 보여주는 질문', guide: { description: '"다른 방법으로도 가능하다"면 이 직무를 선택한 이유가 약해집니다.', diagnosis: '즉석자가진단: "다른 직무에서도 가능하지 않나요?"에 즉답 가능한가?', helpQuestions: ['다른 방법으로 같은 가치를 실현할 수 있나요?', '그래도 이 직무를 선택한 이유는?', '이 직무만이 줄 수 있는 고유한 경험은?'], ifDifficult: '이 직무를 하는 순간이 가장 몰입되는 이유를 떠올려보세요.', ifStillDifficult: '이 직무를 평생 해야 한다면 기꺼이 할 수 있나요? 그 이유가 핵심입니다.' }, placeholder: '예: 컨설팅에서도 고객 분석을 하지만 "실행"까지 갈 수 없습니다. "설계부터 실행까지 일관된 과정"은 마케팅에서만 가능합니다.', rows: 4, relatedWorkbooks: ['job_analysis', 'career_roadmap'] }
     ],
@@ -1036,7 +1036,7 @@ const IntroStickyHeader = ({ workbookKey, stepLabel, StepNavComponent }) => {
           style={{ padding: '8px 14px', borderRadius: 8, border: 'none', fontSize: 14, fontWeight: 600, fontFamily: 'inherit', background: _INTRO_INK, color: '#fff', opacity: 0.4, cursor: 'not-allowed' }}
           title="작성을 시작하면 활성화됩니다"
         >
-          저장(.doc)
+          저장 (.docx)
         </button>
       </div>
     </div>
@@ -1143,7 +1143,7 @@ const IntroPage = ({
               <StepNavigatorDropdown open={showStepNav} onClose={() => setShowStepNav(false)} currentKey="motivation" />
             </div>
             <button onClick={savePartial} className="ce-save-btn" style={S.btnSaveHeader} title="지금까지 작성한 내용을 Word로 저장">
-              저장(.doc)
+              저장 (.docx)
             </button>
             <button onClick={clearSavedData} style={{ background: 'transparent', color: '#6E7A8F', border: '1px solid #6E7A8F44', borderRadius: 10, padding: '6px 12px', fontSize: 13, fontWeight: 500, cursor: 'pointer', marginLeft: 8, whiteSpace: 'nowrap' }} title="저장된 작성 내용을 모두 지우고 처음부터 다시 시작">
               새로 시작
@@ -1225,7 +1225,7 @@ const IntroPage = ({
               <StepNavigatorDropdown open={showStepNav} onClose={() => setShowStepNav(false)} currentKey="motivation" />
             </div>
             <button onClick={savePartial} className="ce-save-btn" style={S.btnSaveHeader} title="지금까지 작성한 내용을 Word로 저장">
-              저장(.doc)
+              저장 (.docx)
             </button>
             <button onClick={clearSavedData} style={{ background: 'transparent', color: '#6E7A8F', border: '1px solid #6E7A8F44', borderRadius: 10, padding: '6px 12px', fontSize: 13, fontWeight: 500, cursor: 'pointer', marginLeft: 8, whiteSpace: 'nowrap' }} title="저장된 작성 내용을 모두 지우고 처음부터 다시 시작">
               새로 시작
@@ -1456,7 +1456,7 @@ const IntroPage = ({
             </div>
             {/* 우: 저장 버튼 */}
             <button onClick={savePartial} className="ce-save-btn" style={S.btnSaveHeader} title="지금까지 작성한 내용을 Word로 저장">
-              저장(.doc)
+              저장 (.docx)
             </button>
             <button onClick={clearSavedData} style={{ background: 'transparent', color: '#6E7A8F', border: '1px solid #6E7A8F44', borderRadius: 10, padding: '6px 12px', fontSize: 13, fontWeight: 500, cursor: 'pointer', marginLeft: 8, whiteSpace: 'nowrap' }} title="저장된 작성 내용을 모두 지우고 처음부터 다시 시작">
               새로 시작
